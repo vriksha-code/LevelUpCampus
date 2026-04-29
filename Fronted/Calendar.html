@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>LevelUp Campus - Calendar</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body class="font-body-md text-on-surface min-h-screen pb-32" data-page="calendar">
+  <header class="fixed top-0 left-0 w-full bg-slate-950/40 backdrop-blur-xl border-b border-white/10 p-4 z-40">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <div class="text-white font-bold">LevelUp Campus</div>
+      <div>
+        <button onclick="history.back()" class="px-3 py-1 bg-white/5 rounded">Back</button>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-5xl mx-auto pt-24 px-6">
+    <h1 class="text-2xl font-bold text-white mb-4">Activity Calendar</h1>
+    <p class="text-slate-400 mb-6">Days you earned XP are highlighted.</p>
+    <div id="calendar-root" class="grid grid-cols-7 gap-2"></div>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>

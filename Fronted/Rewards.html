@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "outline-variant": "#464554",
+                  "surface-tint": "#c0c1ff",
+                  "surface-bright": "#31394d",
+                  "tertiary-container": "#009eb9",
+                  "inverse-primary": "#494bd6",
+                  "inverse-surface": "#dae2fd",
+                  "on-primary-container": "#0d0096",
+                  "secondary": "#d0bcff",
+                  "error": "#ffb4ab",
+                  "on-error": "#690005",
+                  "tertiary": "#4cd7f6",
+                  "secondary-fixed-dim": "#d0bcff",
+                  "on-primary-fixed": "#07006c",
+                  "surface-container-high": "#222a3d",
+                  "secondary-container": "#571bc1",
+                  "outline": "#908fa0",
+                  "surface-container": "#171f33",
+                  "primary-fixed": "#e1e0ff",
+                  "on-secondary-container": "#c4abff",
+                  "on-tertiary-fixed": "#001f26",
+                  "on-error-container": "#ffdad6",
+                  "surface-container-lowest": "#060e20",
+                  "on-tertiary-fixed-variant": "#004e5c",
+                  "on-secondary-fixed": "#23005c",
+                  "primary-container": "#8083ff",
+                  "error-container": "#93000a",
+                  "on-secondary": "#3c0091",
+                  "on-primary": "#1000a9",
+                  "inverse-on-surface": "#283044",
+                  "surface-container-highest": "#2d3449",
+                  "surface": "#0b1326",
+                  "surface-variant": "#2d3449",
+                  "on-tertiary-container": "#002f38",
+                  "primary-fixed-dim": "#c0c1ff",
+                  "tertiary-fixed-dim": "#4cd7f6",
+                  "on-background": "#dae2fd",
+                  "background": "#0b1326",
+                  "surface-container-low": "#131b2e",
+                  "on-surface": "#dae2fd",
+                  "tertiary-fixed": "#acedff",
+                  "on-surface-variant": "#c7c4d7",
+                  "primary": "#c0c1ff",
+                  "on-tertiary": "#003640",
+                  "surface-dim": "#0b1326",
+                  "secondary-fixed": "#e9ddff",
+                  "on-secondary-fixed-variant": "#5516be",
+                  "on-primary-fixed-variant": "#2f2ebe"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "md": "1.5rem",
+                  "gutter": "1.5rem",
+                  "lg": "2rem",
+                  "xs": "0.5rem",
+                  "unit": "4px",
+                  "sm": "1rem",
+                  "xl": "3rem",
+                  "margin-page": "2.5rem"
+          },
+          "fontFamily": {
+                  "body-lg": ["Inter"],
+                  "label-caps": ["Inter"],
+                  "body-md": ["Inter"],
+                  "h2-headline": ["Inter"],
+                  "stat-value": ["Inter"],
+                  "h1-display": ["Inter"],
+                  "h3-title": ["Inter"]
+          },
+          "fontSize": {
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                  "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                  "h2-headline": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                  "stat-value": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                  "h1-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                  "h3-title": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.4);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+    }
+    .glow-indigo {
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+    }
+    .badge-gradient {
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.1), transparent);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#020617] text-on-background font-body-md min-h-screen pb-32" data-page="rewards">
+<!-- Top Navigation Shell -->
+<header class="bg-slate-950/40 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex justify-between items-center px-6 py-4 w-full z-50 fixed top-0 left-0">
+<div class="flex items-center gap-3">
+<div class="text-lg font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 font-inter">
+        LevelUp Campus
+      </div>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-slate-400 hover:bg-white/5 transition-colors font-inter tracking-tight font-semibold" href="#">Dashboard</a>
+<a class="text-slate-400 hover:bg-white/5 transition-colors font-inter tracking-tight font-semibold" href="#">Leaderboard</a>
+<a class="text-slate-400 hover:bg-white/5 transition-colors font-inter tracking-tight font-semibold" href="#">Community</a>
+<a class="text-indigo-400 font-bold font-inter tracking-tight" href="#">Rewards</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-indigo-500 dark:text-indigo-400 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-bold text-stat-value" data-bind="rewards-earned-badges">12</span>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-indigo-500/30 overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="Portrait of a young tech-savvy student with a friendly expression, soft cinematic lighting, futuristic digital background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMreZkv_9Qi2VXc7Iwjj7cCkiHpaFntdTrqO5VPFNdrhdgLfIFPMw2kk_UcDqYUKjNsiLgWeUeNbocGxPEWRKAZ59k-jPwDBZ3XLlDUZhyCyMwTavaXE9XwFfjVX8dNqqvZ6vDUG9DKxZYXUIhooUvOYIctUu5hP10zdyDn-LJOuf2dW6z03SzPWQBtIVgNe8MyAoZhlXpA3kmYV8qIvQ4_vFe7zw7DLbRTjBigSU0M_wfCW45iKaBCfWclCkQUuGJa0myZDC8QnIb"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 px-gutter max-w-7xl mx-auto space-y-lg">
+<!-- Hero Progress Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-8 glass-card rounded-2xl p-lg flex flex-col justify-center relative overflow-hidden">
+<!-- Glow Background Decor -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-[100px]"></div>
+<div class="relative z-10">
+<span class="text-tertiary font-label-caps mb-xs block">CURRENT PROGRESS</span>
+<h1 class="text-h1-display font-h1-display text-white mb-md">Unlock Elite Status</h1>
+<p class="text-body-lg text-on-surface-variant max-w-md mb-lg">Complete 3 more tasks to unlock the <span class="text-indigo-400 font-bold">Fast Learner</span> badge and earn 500 XP bonus.</p>
+<div class="space-y-sm">
+<div class="flex justify-between items-end">
+<span class="text-body-md font-bold text-white">7/10 Tasks</span>
+<span class="text-label-caps text-tertiary" data-bind="rewards-completion">70% ACHIEVED</span>
+</div>
+<div class="h-4 w-full bg-surface-container-highest rounded-full overflow-hidden border border-white/5">
+<div class="h-full bg-gradient-to-r from-cyan-400 to-indigo-500 glow-indigo shadow-[0_0_12px_rgba(99,102,241,0.5)] w-[70%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Stats Widget -->
+<div class="lg:col-span-4 grid grid-cols-2 gap-sm">
+<div class="glass-card rounded-2xl p-md flex flex-col items-center justify-center text-center">
+<div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-indigo-400" data-icon="military_tech">military_tech</span>
+</div>
+<span class="text-h3-title font-h3-title text-white" data-bind="rewards-earned-badges">14</span>
+<span class="text-label-caps text-slate-400 uppercase">Badges</span>
+</div>
+<div class="glass-card rounded-2xl p-md flex flex-col items-center justify-center text-center">
+<div class="w-12 h-12 rounded-xl bg-tertiary/20 flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-tertiary" data-icon="star">star</span>
+</div>
+<span class="text-h3-title font-h3-title text-white">2,840</span>
+<span class="text-label-caps text-slate-400 uppercase">Total XP</span>
+</div>
+<div class="glass-card rounded-2xl p-md col-span-2 flex items-center gap-md">
+<div class="w-14 h-14 rounded-full bg-surface-container-highest flex items-center justify-center border border-white/10 shrink-0">
+<span class="material-symbols-outlined text-white" data-icon="workspace_premium">workspace_premium</span>
+</div>
+<div>
+<span class="text-body-md font-bold text-white block">Diamond Tier</span>
+<span class="text-label-caps text-slate-400 uppercase">Top 5% of Students</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Badges -->
+<section class="glass-card rounded-2xl p-lg">
+<div class="flex items-center justify-between mb-md">
+<h2 class="text-h3-title font-h3-title text-white">Recently Unlocked Badges</h2>
+<span class="text-label-caps text-indigo-400 uppercase">After level-up</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md" data-rewards-recent-badges>
+<div class="rounded-2xl border border-white/10 bg-white/5 p-md text-slate-400 text-sm">Your latest earned badges will appear here after you level up.</div>
+</div>
+</section>
+<!-- Level History -->
+<section class="glass-card rounded-2xl p-lg">
+<div class="flex items-center justify-between mb-md">
+<h2 class="text-h3-title font-h3-title text-white">Level History</h2>
+<span class="text-label-caps text-indigo-400 uppercase">Current + previous levels</span>
+</div>
+<div class="space-y-md" data-level-history>
+<div class="rounded-2xl border border-white/10 bg-white/5 p-md text-slate-400 text-sm">Loading level history...</div>
+</div>
+</section>
+<!-- Badges Grid -->
+<section>
+<div class="flex justify-between items-center mb-md">
+<h2 class="text-h2-headline font-h2-headline text-white">Badge Collection</h2>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-label-caps">ALL</button>
+<button class="px-4 py-2 rounded-lg text-slate-500 text-label-caps hover:text-slate-300">EARNED</button>
+<button class="px-4 py-2 rounded-lg text-slate-500 text-label-caps hover:text-slate-300">LOCKED</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-md" data-rewards-badges>
+<!-- Earned Badge: 7-Day Streak -->
+<div class="glass-card rounded-2xl p-md flex flex-col items-center text-center group active:scale-95 transition-all">
+<div class="relative w-24 h-24 mb-md">
+<div class="absolute inset-0 bg-orange-500/20 rounded-full blur-xl group-hover:bg-orange-500/40 transition-all"></div>
+<div class="relative w-24 h-24 rounded-full border-2 border-orange-500/50 flex items-center justify-center badge-gradient bg-surface-container-high shadow-lg">
+<span class="material-symbols-outlined text-orange-400 text-4xl" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+<h3 class="text-body-md font-bold text-white mb-xs">7-Day Streak</h3>
+<p class="text-label-caps text-slate-400 mb-md">Maintained focus for a full week</p>
+<span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-[10px] font-bold border border-green-500/20">EARNED</span>
+</div>
+<!-- Earned Badge: XP Master -->
+<div class="glass-card rounded-2xl p-md flex flex-col items-center text-center group active:scale-95 transition-all">
+<div class="relative w-24 h-24 mb-md">
+<div class="absolute inset-0 bg-indigo-500/20 rounded-full blur-xl group-hover:bg-indigo-500/40 transition-all"></div>
+<div class="relative w-24 h-24 rounded-full border-2 border-indigo-500/50 flex items-center justify-center badge-gradient bg-surface-container-high shadow-lg">
+<span class="material-symbols-outlined text-indigo-400 text-4xl" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+<h3 class="text-body-md font-bold text-white mb-xs">XP Master</h3>
+<p class="text-label-caps text-slate-400 mb-md">Gained over 2000 XP in a month</p>
+<span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-[10px] font-bold border border-green-500/20">EARNED</span>
+</div>
+<!-- Locked Badge: Fast Learner -->
+<div class="glass-card rounded-2xl p-md flex flex-col items-center text-center opacity-70 group active:scale-95 transition-all grayscale-[0.5] hover:grayscale-0 transition-all">
+<div class="relative w-24 h-24 mb-md">
+<div class="relative w-24 h-24 rounded-full border-2 border-white/10 flex items-center justify-center badge-gradient bg-surface-container-lowest shadow-lg">
+<span class="material-symbols-outlined text-slate-600 text-4xl" data-icon="speed">speed</span>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg opacity-40" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+<h3 class="text-body-md font-bold text-white mb-xs">Fast Learner</h3>
+<p class="text-label-caps text-slate-400 mb-md">Complete 10 tasks in 1 day</p>
+<div class="w-full bg-white/5 h-1 rounded-full mb-1">
+<div class="bg-tertiary h-full w-[70%]"></div>
+</div>
+<span class="text-[10px] text-slate-500 font-bold">7/10 TASKS</span>
+</div>
+<!-- Locked Badge: Community Helper -->
+<div class="glass-card rounded-2xl p-md flex flex-col items-center text-center opacity-70 group active:scale-95 transition-all grayscale-[0.5] hover:grayscale-0 transition-all">
+<div class="relative w-24 h-24 mb-md">
+<div class="relative w-24 h-24 rounded-full border-2 border-white/10 flex items-center justify-center badge-gradient bg-surface-container-lowest shadow-lg">
+<span class="material-symbols-outlined text-slate-600 text-4xl" data-icon="volunteer_activism">volunteer_activism</span>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg opacity-40" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+<h3 class="text-body-md font-bold text-white mb-xs">Community Helper</h3>
+<p class="text-label-caps text-slate-400 mb-md">Answer 5 peer questions</p>
+<div class="w-full bg-white/5 h-1 rounded-full mb-1">
+<div class="bg-tertiary h-full w-[20%]"></div>
+</div>
+<span class="text-[10px] text-slate-500 font-bold">1/5 ANSWERS</span>
+</div>
+<!-- Locked Badge: Top 10 -->
+<div class="glass-card rounded-2xl p-md flex flex-col items-center text-center opacity-70 group active:scale-95 transition-all grayscale-[0.5] hover:grayscale-0 transition-all">
+<div class="relative w-24 h-24 mb-md">
+<div class="relative w-24 h-24 rounded-full border-2 border-white/10 flex items-center justify-center badge-gradient bg-surface-container-lowest shadow-lg">
+<span class="material-symbols-outlined text-slate-600 text-4xl" data-icon="emoji_events">emoji_events</span>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg opacity-40" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+<h3 class="text-body-md font-bold text-white mb-xs">Top 10</h3>
+<p class="text-label-caps text-slate-400 mb-md">Reach Leaderboard Top 10</p>
+<span class="bg-surface-container-highest text-slate-500 px-3 py-1 rounded-full text-[10px] font-bold border border-white/5 uppercase">Rank #42</span>
+</div>
+</div>
+</section>
+<!-- Achievement Timeline -->
+<section class="glass-card rounded-2xl p-lg">
+<h2 class="text-h3-title font-h3-title text-white mb-lg">Achievement Timeline</h2>
+<div class="relative space-y-lg before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-indigo-500/20" data-rewards-timeline>
+<!-- Timeline Item 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-indigo-500 border-4 border-slate-900 z-10"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div>
+<h4 class="text-body-md font-bold text-white">Unlocked: "Social Butterfly"</h4>
+<p class="text-body-md text-slate-400">Successfully joined 5 study groups in one week.</p>
+</div>
+<span class="text-label-caps text-indigo-400 whitespace-nowrap">2 DAYS AGO</span>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-indigo-500 border-4 border-slate-900 z-10"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div>
+<h4 class="text-body-md font-bold text-white">Level Up: Reach Level 15</h4>
+<p class="text-body-md text-slate-400">Advanced to the Junior Scholar tier.</p>
+</div>
+<span class="text-label-caps text-indigo-400 whitespace-nowrap">1 WEEK AGO</span>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-indigo-500/40 border-4 border-slate-900 z-10"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+<div>
+<h4 class="text-body-md font-bold text-white">Unlocked: "Early Bird"</h4>
+<p class="text-body-md text-slate-400">Completed first task before 8:00 AM for 3 days.</p>
+</div>
+<span class="text-label-caps text-indigo-400 whitespace-nowrap">OCT 12, 2023</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-950/60 backdrop-blur-2xl border-t border-white/10 shadow-[0_-8px_32px_rgba(0,0,0,0.3)] md:hidden">
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium font-inter">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="text-[10px] font-medium font-inter">Leaderboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-[10px] font-medium font-inter">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-cyan-400 bg-indigo-500/10 rounded-xl px-3 py-1 shadow-[0_0_15px_rgba(34,211,238,0.2)] active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="text-[10px] font-medium font-inter">Rewards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium font-inter">Profile</span>
+</a>
+</nav>
+<script src="/app.js" defer></script>
+</body></html>

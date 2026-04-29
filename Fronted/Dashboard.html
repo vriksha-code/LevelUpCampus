@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LevelUp Campus - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#464554",
+                        "surface-tint": "#c0c1ff",
+                        "surface-bright": "#31394d",
+                        "tertiary-container": "#009eb9",
+                        "inverse-primary": "#494bd6",
+                        "inverse-surface": "#dae2fd",
+                        "on-primary-container": "#0d0096",
+                        "secondary": "#d0bcff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "tertiary": "#4cd7f6",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-container-high": "#222a3d",
+                        "secondary-container": "#571bc1",
+                        "outline": "#908fa0",
+                        "surface-container": "#171f33",
+                        "primary-fixed": "#e1e0ff",
+                        "on-secondary-container": "#c4abff",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "on-secondary-fixed": "#23005c",
+                        "primary-container": "#8083ff",
+                        "error-container": "#93000a",
+                        "on-secondary": "#3c0091",
+                        "on-primary": "#1000a9",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-highest": "#2d3449",
+                        "surface": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "on-tertiary-container": "#002f38",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "on-background": "#dae2fd",
+                        "background": "#0b1326",
+                        "surface-container-low": "#131b2e",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed": "#acedff",
+                        "on-surface-variant": "#c7c4d7",
+                        "primary": "#c0c1ff",
+                        "on-tertiary": "#003640",
+                        "surface-dim": "#0b1326",
+                        "secondary-fixed": "#e9ddff",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "on-primary-fixed-variant": "#2f2ebe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "gutter": "1.5rem",
+                        "lg": "2rem",
+                        "xs": "0.5rem",
+                        "unit": "4px",
+                        "sm": "1rem",
+                        "xl": "3rem",
+                        "margin-page": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2-headline": ["Inter"],
+                        "stat-value": ["Inter"],
+                        "h1-display": ["Inter"],
+                        "h3-title": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2-headline": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "stat-value": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h1-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "h3-title": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #020617; }
+        .glass-card {
+            background: rgba(192, 193, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-cyan { filter: drop-shadow(0 0 8px rgba(76, 215, 246, 0.4)); }
+        .glow-indigo { filter: drop-shadow(0 0 12px rgba(128, 131, 255, 0.3)); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen pb-32" data-page="dashboard">
+<!-- TopAppBar -->
+<header class="bg-slate-950/40 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="text-lg font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">LevelUp Campus</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 bg-white/5 rounded-full px-3 py-1 border border-white/5">
+<span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-label-caps font-bold text-on-surface" data-bind="streak-current">12</span>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-indigo-500/30 p-0.5">
+<img alt="User Profile" class="w-full h-full rounded-full object-cover" data-alt="close-up portrait of a professional young man with a friendly smile, clean studio lighting, high resolution photography" data-bind="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-DFB9H-tHEDNGdbbqaFF1bzWq_IpnFZMvOlVrLvffc3mBYuGRz7uJde-z643_H6uO9YK819ARt4ihwS8VpNAklyqqOH2nFzXO-DjTvV-YAGnto5p1U3xgHbipdB9EPXQtbA1oPOeaPQpcjGi9EF1s5q7sa3CjMIiLmkdN09xbdd64Q6FJZ_ZzjFGY_bRxpGcKWAS8o-OwtWK9I4_-u--KDdEycgd3h8AcnIwts1TIaOJEPRyYWbdv1EaWwh5YYEGzh607J9GaUshg"/>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-24 space-y-8">
+<!-- Hero Section: Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Profile Card -->
+<div class="md:col-span-8 glass-card rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center md:items-start relative overflow-hidden">
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+<div class="w-32 h-32 rounded-3xl overflow-hidden border-2 border-white/10 shrink-0 shadow-2xl">
+<img class="w-full h-full object-cover" data-alt="digital avatar profile picture of a young professional with soft cinematic lighting and tech aesthetic" data-bind="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf3SLgir_MQy8ei8S0BZwGew_AAPmSu4PiMpkdVex1IkEdS-p0nY4njw2Cau9GIdzcciwt4zkoz54UxErcFnVtfOJzkZEaQ_4LwmazIPt04k4yaCGA9kaKwRaTff-n4T97yuKls7ik8gzqdzkymT7Ee4zEdptUdhxE7jTbNWn-wsHSEdalxwUJtQ0HybK1vDBGonNHgUIQicl8b0kXAsilHbLcLF6-i4cUePdp8y3PNnU-22yLAXMzI-pTYuURkTFzM6srPzvoVtDi"/>
+</div>
+<div class="flex-1 w-full space-y-4">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-2">
+<div>
+<h1 class="font-h1-display text-h2-headline text-white" data-bind="profile-name">Alex Rivera</h1>
+<p class="font-body-md text-slate-400" data-bind="profile-email">arivera.student@campus.edu</p>
+</div>
+<div class="bg-indigo-500/20 border border-indigo-500/30 px-4 py-2 rounded-xl backdrop-blur-md">
+<span class="text-label-caps text-indigo-300" data-bind="level-title">Level 5 – Rising Achiever</span>
+</div>
+</div>
+<div class="space-y-2 pt-4">
+<div class="flex justify-between items-end">
+<span class="text-label-caps text-slate-400">XP Progress</span>
+<span class="font-stat-value text-indigo-400"><span data-bind="current-xp">2,450</span> / <span data-bind="required-xp">3,000</span> <span class="text-sm font-normal text-slate-500">XP</span></span>
+</div>
+<div class="h-3 w-full bg-slate-900 rounded-full overflow-hidden border border-white/5 p-0.5">
+<div class="h-full rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-[0_0_12px_rgba(34,211,238,0.4)]" data-bind="progress-bar" style="width: 81.6%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Daily Streak Card -->
+<div class="md:col-span-4 glass-card rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4 border-indigo-500/20">
+<div class="w-20 h-20 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-2xl flex items-center justify-center relative">
+<div class="absolute inset-0 bg-orange-500/10 blur-xl rounded-full"></div>
+<span class="material-symbols-outlined text-5xl text-orange-400 glow-indigo" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<h3 class="font-h3-title text-white"><span data-bind="streak-current">12</span> Day Streak</h3>
+<p class="text-slate-400 text-body-md">You're on fire! Keep the momentum going to earn the 'Phoenix' badge.</p>
+</div>
+<button data-view-calendar class="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-label-caps text-white transition-all active:scale-95">VIEW CALENDAR</button>
+</div>
+</div>
+<!-- Level Roadmap -->
+<section class="space-y-4">
+<h2 class="font-h3-title text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">map</span>
+                Academic Roadmap
+            </h2>
+<div class="flex gap-gutter overflow-x-auto pb-4 hide-scrollbar">
+<!-- Current Level -->
+<div class="min-w-[240px] glass-card rounded-2xl p-6 border-indigo-500/40 relative">
+<div class="absolute -top-2 -left-2 bg-indigo-500 text-white text-[10px] font-bold px-2 py-1 rounded-md">CURRENT</div>
+<span class="material-symbols-outlined text-indigo-400 text-3xl mb-4">military_tech</span>
+<h4 class="font-h3-title text-sm text-white" data-bind="roadmap-current-level">Level 1</h4>
+<p class="text-xs text-slate-400 mb-4" data-bind="roadmap-current-title">Freshman</p>
+<div class="text-[10px] text-indigo-300 font-bold tracking-widest">UNLOCKED</div>
+</div>
+<div class="flex gap-gutter" data-roadmap-upcoming></div>
+</div>
+</section>
+<!-- Stats Grid & Main Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Side: Progress & Tasks -->
+<div class="lg:col-span-8 space-y-gutter">
+<!-- Today's Progress Card -->
+<div class="glass-card rounded-3xl p-8">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="font-h3-title text-white">Today's Progress</h3>
+<p class="text-slate-400 text-sm">3 out of 5 daily goals reached</p>
+</div>
+<span class="font-stat-value text-cyan-400">60%</span>
+</div>
+<div class="space-y-6">
+        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-all">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">menu_book</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-semibold text-white">Complete Algorithm Lab</h4>
+<p class="text-xs text-slate-500">+150 XP • Computer Science</p>
+</div>
+            <button class="material-symbols-outlined text-tertiary bg-transparent border-0 text-2xl" data-award-xp data-xp-amount="150" data-xp-source="Algorithm Lab" title="Mark complete">check_circle</button>
+</div>
+        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+<div class="w-10 h-10 rounded-xl bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-semibold text-white">Group Study Session</h4>
+<p class="text-xs text-slate-500">+100 XP • Networking</p>
+</div>
+            <div class="flex items-center gap-2">
+                <button class="px-4 py-1.5 bg-indigo-500 rounded-lg text-xs font-bold text-white shadow-[0_0_15px_rgba(128,131,255,0.4)]" data-join-study-session type="button">JOIN</button>
+                <button class="px-3 py-1 bg-white/5 rounded text-xs text-slate-300" data-award-xp data-xp-amount="100" data-xp-source="Group Study" title="Mark attended">Mark Done</button>
+            </div>
+</div>
+            <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                <div class="w-10 h-10 rounded-xl bg-tertiary-container/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-tertiary">quiz</span>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-sm font-semibold text-white">Daily Quiz</h4>
+                    <p class="text-xs text-slate-500">+50 XP • Quick knowledge check</p>
+                </div>
+                <button class="px-3 py-1 bg-white/5 rounded text-xs text-slate-300" data-open-quiz data-quiz-question="What is 2 + 2?" data-quiz-answer="4" data-xp-amount="50" data-xp-source="Daily Quiz" title="Complete quiz">Complete</button>
+            </div>
+</div>
+</div>
+<!-- Recent Achievements -->
+<div class="glass-card rounded-3xl p-8">
+<h3 class="font-h3-title text-white mb-6">Recent Achievements</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-white/5 to-transparent border-l-2 border-cyan-400">
+<div class="w-12 h-12 bg-cyan-400/10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-cyan-400" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white uppercase tracking-wider">Early Bird</h4>
+<p class="text-xs text-slate-400">Completed tasks before 8 AM for 5 days.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-white/5 to-transparent border-l-2 border-indigo-400">
+<div class="w-12 h-12 bg-indigo-400/10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-indigo-400" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white uppercase tracking-wider">Social Link</h4>
+<p class="text-xs text-slate-400">Connected with 20 peers in the community.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Mini Stats & Rank -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- Quick Stats Grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center">
+<span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total XP</span>
+<span class="font-stat-value text-white text-2xl">14.2k</span>
+</div>
+<div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center">
+<span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Badges</span>
+<span class="font-stat-value text-white text-2xl">24</span>
+</div>
+<div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center border-tertiary/20">
+<span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Rank</span>
+<span class="font-stat-value text-tertiary text-2xl">#42</span>
+</div>
+<div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center border-secondary/20">
+<span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Global</span>
+<span class="font-stat-value text-secondary text-2xl">Top 2%</span>
+</div>
+</div>
+<!-- Leaderboard Preview Card -->
+<div class="glass-card rounded-3xl p-8 space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-white font-semibold">Leaderboard</h3>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer">arrow_forward</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-500 w-4" data-bind="rank-position">1</span>
+<div class="w-8 h-8 rounded-full bg-slate-800 overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="professional headshot of a young adult with glasses, neutral expression, soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpYU52J0N1oHp3n4q_VWBVbl5kv8QBiuj9EmIekArLEqje5NeaYN6zJaId9Yp2ZjOO2MxxyCTUUYqv4rnRn1Ck0uph9QdrPAO5k5N-1H0CwTVsdFJiVd1sLmF2ym1XibmCdyCpWAB9HHSs-7TtEnuRnaquefGpx2SnrbtdPkXtH8BkqnvWj6Is-Ori95iuQkQCenCyuek-ZIsdzuQVq8baL17Hwbw1ET-97BLbJd0a0kkLu0TFmg8-SRNIwdzH4mvvlmlIRA-myCmk"/>
+</div>
+<span class="text-sm flex-1 text-slate-300">Marcus T.</span>
+<span class="text-xs font-bold text-indigo-400">18.5k XP</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-500 w-4">2</span>
+<div class="w-8 h-8 rounded-full bg-slate-800 overflow-hidden border border-white/10">
+<img class="w-full h-full object-cover" data-alt="vibrant portrait of a smiling woman with warm background tones, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8LjJ4vMSwPqIIOBMaD8jEfXrt7vhazP-CZ93H-q_23dc2BvZsEhNumI5xwIbHAR82sycap17366mXbkCGhO8dtewF29Pc2HPl-X8kVpP1dAMWF8g7B1-6g9l7TqaLhLJiYSdgbpyIM1Ucc32roV90TvoxFB9YYQFsH34iuyBBxceEtEKlvEKzMJYLo-LDu-fgQ1MgIE9FtNzx_A-8tN5XwJOtv7b-bs89w_7AFNjK9JK6QbiNr2G5dDlvy91jmkRDje8-pgjOxAEm"/>
+</div>
+<span class="text-sm flex-1 text-slate-300">Sarah L.</span>
+<span class="text-xs font-bold text-indigo-400">17.2k XP</span>
+</div>
+<div class="flex items-center gap-3 bg-indigo-500/10 p-2 rounded-xl border border-indigo-500/20">
+<span class="text-xs font-bold text-indigo-300 w-4">42</span>
+<div class="w-8 h-8 rounded-full bg-slate-800 overflow-hidden border border-indigo-500/30">
+<img class="w-full h-full object-cover" data-alt="close-up profile photo of a young man with professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFs-B9-mhfKrgRNFBrjlsqngyLjgRHK-d_jGfN4vUvBrCJytb_qknA-Rtxs1KQt1ocYQ8qlJn3GJcL9nIdfk2VGuVbzhoewYWzZ60dk6N0p4Hil1J7PZhxMkCK1OKbnjd6b6zNZ9hVdv7hrX-j2F4Ojmh0NuyDCJJu2n456ot1596yz8m1TIWQem-8R5opLBJBe7QfSfq9fNq6A9LOp-zDriLSx4ez67oh-stMfmiXzR2osXAnkAJeT9wtXSllyImEc1mfCu-V_Fn9"/>
+</div>
+<span class="text-sm flex-1 text-indigo-100 font-semibold">You</span>
+<span class="text-xs font-bold text-indigo-400">14.2k XP</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-950/60 backdrop-blur-2xl border-t border-white/10 shadow-[0_-8px_32px_rgba(0,0,0,0.3)] rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-cyan-400 bg-indigo-500/10 rounded-xl px-3 py-1 shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium font-inter">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-[10px] font-medium font-inter">Leaderboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-[10px] font-medium font-inter">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="text-[10px] font-medium font-inter">Rewards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium font-inter">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button -->
+<div class="fixed bottom-24 right-6 z-40">
+<button class="w-14 h-14 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-full flex items-center justify-center text-white shadow-[0_8px_24px_rgba(128,131,255,0.4)] hover:shadow-[0_12px_32px_rgba(128,131,255,0.6)] transition-all active:scale-90">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</div>
+<!-- Quiz Modal -->
+<div id="quiz-modal" class="hidden fixed inset-0 z-60 flex items-center justify-center bg-black/60">
+    <div class="bg-surface-container-high rounded-2xl p-6 max-w-md w-full">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-white font-bold">Daily Quiz</h3>
+            <button id="quiz-close" class="text-slate-400">✕</button>
+        </div>
+        <div id="quiz-question" class="text-slate-200 mb-4">Question goes here</div>
+        <input id="quiz-answer-input" class="w-full p-3 rounded bg-surface-container-low text-white mb-3" placeholder="Your answer" />
+        <div class="flex justify-end gap-2">
+            <button id="quiz-submit" class="px-4 py-2 bg-indigo-500 rounded text-white">Submit</button>
+            <button id="quiz-cancel" class="px-4 py-2 bg-white/5 rounded text-slate-300">Cancel</button>
+        </div>
+        <div id="quiz-feedback" class="mt-3 text-sm"></div>
+    </div>
+</div>
+<script src="/app.js" defer></script>
+</body></html>

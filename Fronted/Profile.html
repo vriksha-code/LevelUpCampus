@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Profile | LevelUp Campus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1326;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .glass-card-border {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.3);
+        }
+        .glow-indigo {
+            box-shadow: 0 0 20px rgba(128, 131, 255, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#908fa0",
+                      "surface-container-lowest": "#060e20",
+                      "on-secondary-fixed": "#23005c",
+                      "on-secondary-fixed-variant": "#5516be",
+                      "inverse-surface": "#dae2fd",
+                      "primary-fixed-dim": "#c0c1ff",
+                      "secondary-fixed-dim": "#d0bcff",
+                      "surface-bright": "#31394d",
+                      "on-tertiary-fixed": "#001f26",
+                      "on-primary-container": "#0d0096",
+                      "tertiary": "#4cd7f6",
+                      "surface-container-low": "#131b2e",
+                      "primary-container": "#8083ff",
+                      "on-background": "#dae2fd",
+                      "on-tertiary-container": "#002f38",
+                      "surface-container-highest": "#2d3449",
+                      "surface-dim": "#0b1326",
+                      "on-primary": "#1000a9",
+                      "inverse-on-surface": "#283044",
+                      "secondary-fixed": "#e9ddff",
+                      "on-error": "#690005",
+                      "inverse-primary": "#494bd6",
+                      "background": "#0b1326",
+                      "tertiary-fixed-dim": "#4cd7f6",
+                      "tertiary-fixed": "#acedff",
+                      "on-tertiary-fixed-variant": "#004e5c",
+                      "on-error-container": "#ffdad6",
+                      "on-surface-variant": "#c7c4d7",
+                      "surface": "#0b1326",
+                      "on-surface": "#dae2fd",
+                      "outline-variant": "#464554",
+                      "primary-fixed": "#e1e0ff",
+                      "secondary": "#d0bcff",
+                      "error": "#ffb4ab",
+                      "tertiary-container": "#009eb9",
+                      "on-secondary-container": "#c4abff",
+                      "surface-container": "#171f33",
+                      "error-container": "#93000a",
+                      "on-primary-fixed-variant": "#2f2ebe",
+                      "on-primary-fixed": "#07006c",
+                      "surface-tint": "#c0c1ff",
+                      "primary": "#c0c1ff",
+                      "surface-container-high": "#222a3d",
+                      "on-tertiary": "#003640",
+                      "surface-variant": "#2d3449",
+                      "secondary-container": "#571bc1",
+                      "on-secondary": "#3c0091"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "lg": "2rem",
+                      "md": "1.5rem",
+                      "sm": "1rem",
+                      "gutter": "1.5rem",
+                      "xs": "0.5rem",
+                      "xl": "3rem",
+                      "margin-page": "2.5rem"
+              },
+              "fontFamily": {
+                      "label-caps": ["Inter"],
+                      "stat-value": ["Inter"],
+                      "body-md": ["Inter"],
+                      "h2-headline": ["Inter"],
+                      "h1-display": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "h3-title": ["Inter"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "stat-value": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "h2-headline": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "h1-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "h3-title": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32" data-page="profile">
+<!-- TopAppBar -->
+<header class="bg-slate-950/40 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-all duration-200 text-slate-400">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-lg font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 font-inter">Edit Profile</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-sm font-bold text-on-surface" data-profile-page-streak>12</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-indigo-500">
+<img alt="User Profile Avatar" data-alt="close-up portrait of a stylish young student with neon-rimmed glasses, vibrant cinematic lighting, digital art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByvjIf_dtaJM3N0r2d2u9W_h3S-m_AiW-c3ee6oWDtWEfmTAeBv6I6FApKWaREYZp3Ha_MirCGUloLCAIIwrLSEbyeEDjVv6vyrA-o5HzCrnpm9IVeSpgjeNJ6klzmA8zPPlTWGGUw9FHnre2jtIPqzKOYxJ1sJBGchrLiMtWV9zb-YW3dOQcxva_s3IM5zVxmTlvsYTgj0POvtcl0USHYyR1FzNRCawIdDBK95W_oNMAZv3--6bYEZAa44t9H0vsLnQ3ygLL-OpLF"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="mt-24 px-gutter max-w-4xl mx-auto space-y-gutter">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center">
+<div class="relative">
+<!-- Glowing Ring Indicator -->
+<div class="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 animate-pulse blur-md opacity-40"></div>
+<div class="relative w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-cyan-400 via-indigo-500 to-purple-500">
+<div class="w-full h-full rounded-full bg-surface-container-lowest overflow-hidden border-4 border-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="professional headshot of a student with soft indigo lighting and high-tech digital bokeh background" data-profile-page-avatar src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl6wGQdVZmEkcEZtdX8HgyhDs1_b9ZnZExSiaB57WyAqPZIs0sONdmnDuDDTWZi9rHmyNkHC0sDkbfcz9eVXWSLoLeheGW1B5cZDOeFqpfGySb-gbLO2F9MJZZ9BKVh7nD1CgFncdHn4yZtkfzBLgmxrYz7Y9usJFG2Yw129PcUrTG-PRI_KVdtfa7cR2jYG429E4wx1I_zA9A6qfDOVli4ARsj5cV8lC9r7rnQ_25sUpdIUx39n8qH14YKDdaqRS1emrwNcMQGRWX"/>
+</div>
+<button class="absolute bottom-1 right-1 bg-primary-container text-on-primary-container p-2 rounded-full shadow-lg border border-white/20 active:scale-90 transition-transform" data-profile-edit-toggle type="button">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<div class="mt-4 text-center">
+<p class="font-label-caps text-label-caps text-tertiary uppercase tracking-widest" data-profile-page-level>Level 24 • Pro Elite</p>
+<h2 class="font-h2-headline text-h2-headline mt-1" data-profile-page-name>Alex Rivers</h2>
+<p class="mt-2 text-sm text-outline" data-profile-page-email>alex.rivers@college.edu</p>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column: Details -->
+<div class="md:col-span-8 space-y-gutter">
+<div class="glass-card rounded-xl p-6 glass-card-border">
+<h3 class="font-h3-title text-h3-title mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-indigo-400" data-icon="person_edit">person_edit</span>
+                        Personal Info
+                    </h3>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-outline ml-1">DISPLAY NAME</label>
+<input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-on-surface font-body-md text-body-md" data-profile-input="display-name" type="text" value="Alex Rivers"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-outline ml-1">MAJOR</label>
+<div class="relative">
+<span class="absolute left-4 top-3.5 material-symbols-outlined text-outline text-lg" data-icon="school">school</span>
+<input class="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-on-surface font-body-md text-body-md" data-profile-input="major" type="text" value="Computer Science &amp; HCI"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-outline ml-1">BIO</label>
+<textarea class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-on-surface font-body-md text-body-md resize-none" data-profile-input="bio" rows="4">Senior student focused on gamifying education. Building tools for more productive euphoric learning states. 🚀</textarea>
+</div>
+</div>
+</div>
+<!-- Digital Showcase (Badges) -->
+<div class="glass-card rounded-xl p-6 glass-card-border">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-h3-title text-h3-title flex items-center gap-2">
+<span class="material-symbols-outlined text-cyan-400" data-icon="military_tech">military_tech</span>
+                            Digital Showcase
+                        </h3>
+<button class="text-sm font-bold text-primary-fixed hover:underline">Manage All</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Select your top 3 badges to display on your public profile card.</p>
+<div class="grid grid-cols-3 gap-4">
+<div class="relative group cursor-pointer aspect-square bg-white/5 rounded-2xl border-2 border-primary flex flex-col items-center justify-center p-4 glow-indigo">
+<div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mb-2 shadow-lg">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="rocket_launch" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight">Early Bird</span>
+<div class="absolute -top-2 -right-2 bg-primary w-6 h-6 rounded-full flex items-center justify-center border-2 border-background">
+<span class="material-symbols-outlined text-[14px] text-on-primary" data-icon="check">check</span>
+</div>
+</div>
+<div class="relative group cursor-pointer aspect-square bg-white/5 rounded-2xl border-2 border-cyan-400 flex flex-col items-center justify-center p-4 glow-cyan">
+<div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center mb-2 shadow-lg">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="code" style="font-variation-settings: 'FILL' 1;">code</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight">Alpha Coder</span>
+<div class="absolute -top-2 -right-2 bg-tertiary w-6 h-6 rounded-full flex items-center justify-center border-2 border-background">
+<span class="material-symbols-outlined text-[14px] text-on-tertiary" data-icon="check">check</span>
+</div>
+</div>
+<div class="relative group cursor-pointer aspect-square bg-white/5 rounded-2xl border-2 border-indigo-400 flex flex-col items-center justify-center p-4 glow-indigo">
+<div class="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-700 rounded-full flex items-center justify-center mb-2 shadow-lg">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<span class="text-[10px] font-bold text-center leading-tight">Streak Master</span>
+<div class="absolute -top-2 -right-2 bg-primary-container w-6 h-6 rounded-full flex items-center justify-center border-2 border-background">
+<span class="material-symbols-outlined text-[14px] text-on-primary-container" data-icon="check">check</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Settings & Actions -->
+<div class="md:col-span-4 space-y-gutter">
+<!-- Privacy Settings -->
+<div class="glass-card rounded-xl p-6 glass-card-border">
+<h3 class="font-h3-title text-h3-title mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" data-icon="shield_person">shield_person</span>
+                        Privacy
+                    </h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">Public Profile</span>
+<span class="text-xs text-outline">Visible to all students</span>
+</div>
+<button class="w-12 h-6 bg-indigo-500 rounded-full relative transition-colors duration-200" data-profile-toggle="publicProfile" type="button">
+<div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">Show Rank</span>
+<span class="text-xs text-outline">Display on leaderboards</span>
+</div>
+<button class="w-12 h-6 bg-indigo-500 rounded-full relative transition-colors duration-200">
+<div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">Incognito Mode</span>
+<span class="text-xs text-outline">Hide study sessions</span>
+</div>
+<button class="w-12 h-6 bg-surface-container-highest rounded-full relative transition-colors duration-200" data-profile-toggle="incognitoMode" type="button">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white/40 rounded-full"></div>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Card -->
+<div class="glass-card rounded-xl p-6 glass-card-border bg-gradient-to-br from-primary-fixed-dim/10 to-transparent">
+<p class="font-body-md text-body-md mb-6 text-on-surface-variant">Update your details to sync with your campus guild.</p>
+<button class="w-full bg-gradient-to-r from-indigo-500 to-cyan-500 py-4 rounded-xl font-bold text-white shadow-lg active:scale-[0.98] transition-all glow-indigo" data-profile-save-button type="button">
+                        Save Changes
+                    </button>
+<button class="w-full mt-3 py-4 rounded-xl font-bold text-outline hover:text-white transition-colors" data-profile-discard-button type="button">
+                        Discard Edits
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-950/60 backdrop-blur-2xl rounded-t-2xl border-t border-white/10 shadow-[0_-8px_32px_rgba(0,0,0,0.3)]">
+<button class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium font-inter mt-1">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="text-[10px] font-medium font-inter mt-1">Leaderboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-[10px] font-medium font-inter mt-1">Community</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="text-[10px] font-medium font-inter mt-1">Rewards</span>
+</button>
+<button class="flex flex-col items-center justify-center text-cyan-400 bg-indigo-500/10 rounded-xl px-3 py-1 shadow-[0_0_15px_rgba(34,211,238,0.2)] active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium font-inter mt-1">Profile</span>
+</button>
+</nav>
+<script src="/app.js" defer></script>
+</body></html>

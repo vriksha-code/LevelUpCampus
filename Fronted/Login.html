@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "outline-variant": "#464554",
+                  "surface-tint": "#c0c1ff",
+                  "surface-bright": "#31394d",
+                  "tertiary-container": "#009eb9",
+                  "inverse-primary": "#494bd6",
+                  "inverse-surface": "#dae2fd",
+                  "on-primary-container": "#0d0096",
+                  "secondary": "#d0bcff",
+                  "error": "#ffb4ab",
+                  "on-error": "#690005",
+                  "tertiary": "#4cd7f6",
+                  "secondary-fixed-dim": "#d0bcff",
+                  "on-primary-fixed": "#07006c",
+                  "surface-container-high": "#222a3d",
+                  "secondary-container": "#571bc1",
+                  "outline": "#908fa0",
+                  "surface-container": "#171f33",
+                  "primary-fixed": "#e1e0ff",
+                  "on-secondary-container": "#c4abff",
+                  "on-tertiary-fixed": "#001f26",
+                  "on-error-container": "#ffdad6",
+                  "surface-container-lowest": "#060e20",
+                  "on-tertiary-fixed-variant": "#004e5c",
+                  "on-secondary-fixed": "#23005c",
+                  "primary-container": "#8083ff",
+                  "error-container": "#93000a",
+                  "on-secondary": "#3c0091",
+                  "on-primary": "#1000a9",
+                  "inverse-on-surface": "#283044",
+                  "surface-container-highest": "#2d3449",
+                  "surface": "#0b1326",
+                  "surface-variant": "#2d3449",
+                  "on-tertiary-container": "#002f38",
+                  "primary-fixed-dim": "#c0c1ff",
+                  "tertiary-fixed-dim": "#4cd7f6",
+                  "on-background": "#dae2fd",
+                  "background": "#0b1326",
+                  "surface-container-low": "#131b2e",
+                  "on-surface": "#dae2fd",
+                  "tertiary-fixed": "#acedff",
+                  "on-surface-variant": "#c7c4d7",
+                  "primary": "#c0c1ff",
+                  "on-tertiary": "#003640",
+                  "surface-dim": "#0b1326",
+                  "secondary-fixed": "#e9ddff",
+                  "on-secondary-fixed-variant": "#5516be",
+                  "on-primary-fixed-variant": "#2f2ebe"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "md": "1.5rem",
+                  "gutter": "1.5rem",
+                  "lg": "2rem",
+                  "xs": "0.5rem",
+                  "unit": "4px",
+                  "sm": "1rem",
+                  "xl": "3rem",
+                  "margin-page": "2.5rem"
+          },
+          "fontFamily": {
+                  "body-lg": ["Inter"],
+                  "label-caps": ["Inter"],
+                  "body-md": ["Inter"],
+                  "h2-headline": ["Inter"],
+                  "stat-value": ["Inter"],
+                  "h1-display": ["Inter"],
+                  "h3-title": ["Inter"]
+          },
+          "fontSize": {
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                  "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                  "h2-headline": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                  "stat-value": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                  "h1-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                  "h3-title": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-card {
+      background: rgba(19, 27, 46, 0.4);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .glow-point {
+      filter: blur(40px);
+      background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+    }
+    .text-glow {
+      text-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md min-h-screen selection:bg-primary/30" data-page="login">
+<!-- TopAppBar Suppression Rule Applied: Login page is linear/transactional -->
+<main class="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-xl">
+<!-- Ambient Background Glows -->
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] glow-point opacity-30"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] glow-point opacity-20"></div>
+<div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+<!-- Hero Section -->
+<div class="flex flex-col space-y-8 animate-in fade-in slide-in-from-left-4 duration-1000">
+<div class="space-y-4">
+<h1 class="font-h1-display text-h1-display text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 tracking-tighter">
+            LevelUp Campus
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+            Turn your academic journey into a high-stakes adventure. Earn XP, collect rare badges, and dominate the leaderboard.
+          </p>
+</div>
+<!-- Illustration Component -->
+<div class="relative glass-card rounded-3xl p-6 aspect-video overflow-hidden group">
+<img alt="Students studying" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700" data-alt="Modern group of university students collaborating in a high-tech glass-walled study space with holographic UI elements showing XP and progress badges floating around them" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNnd_QUverhWI5GBZ7o-HCFUi5SOktjMOJ8V-HyzQ2YxZcCVcFlnOmGyqgKUjNQ-VsRYkATn5VPF8I4jDXvlC9eDtPt7dgIYHjLCFkNeU3oGzED4x4rE-0eov53GFeR9_9Nwh0qWCzLDQ9Tx_RaRg6X2xBbqDgwy9oOMyNEOI78LQ0655JcZEV-6ATko1WpmSzs8wPPenqzC8i64KklI_058MkdvbJANCcw75Xqcrg6fjws3Eur4OgLGwNbuKFYxBWt_wQfR0RH-OC"/>
+<!-- Floating UI Badges -->
+<div class="absolute top-6 left-6 flex items-center gap-3 glass-card bg-indigo-500/20 px-4 py-2 rounded-full border-white/20">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-label-caps text-label-caps text-tertiary">ELITE SCHOLAR</span>
+</div>
+<div class="absolute bottom-6 right-6 flex items-center gap-3 glass-card bg-cyan-500/20 px-4 py-2 rounded-full border-white/20">
+<span class="material-symbols-outlined text-cyan-400">local_fire_department</span>
+<span class="font-label-caps text-label-caps text-cyan-400">14 DAY STREAK</span>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="h-20 w-20 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-[0_0_40px_rgba(79,70,229,0.5)]">
+<span class="material-symbols-outlined text-4xl text-white">bolt</span>
+</div>
+<div class="mt-4 font-stat-value text-stat-value text-white text-glow">2,450 XP</div>
+</div>
+</div>
+</div>
+<!-- Auth Canvas -->
+<div class="flex flex-col space-y-6">
+<!-- Login Card -->
+<section class="glass-card rounded-[2rem] p-8 md:p-12 shadow-2xl relative">
+<div class="absolute -top-4 -right-4 h-16 w-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center border border-indigo-500/20 backdrop-blur-md">
+<span class="material-symbols-outlined text-indigo-400" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div class="space-y-8">
+<header class="space-y-2">
+<h2 class="font-h2-headline text-h2-headline text-on-surface">Welcome back, Prodigy</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Use your official college email to continue.</p>
+</header>
+<form class="space-y-6" id="login-form">
+<!-- Email Input Group -->
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-indigo-300 ml-1" for="email">Official Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-500 group-focus-within:text-indigo-400 transition-colors">alternate_email</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-surface-container-high border border-white/10 rounded-2xl text-on-surface placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all" id="email" placeholder="name@university.edu" type="email"/>
+</div>
+</div>
+<p class="text-sm text-slate-400" id="auth-message" aria-live="polite"></p>
+<!-- Action Button -->
+<button class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-cyan-500 text-white font-h3-title text-body-lg py-4 rounded-2xl shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3" id="send-otp-button" type="button">
+                Send OTP
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</form>
+<div class="relative py-4">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/5"></div></div>
+<div class="relative flex justify-center text-xs uppercase"><span class="bg-surface-container-low px-2 text-slate-500">Verification Pending</span></div>
+</div>
+<!-- OTP Section (Side-by-side or nested visual) -->
+<div class="bg-white/5 rounded-2xl p-6 border border-white/5 space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-cyan-400">verified_user</span>
+<h3 class="font-h3-title text-stat-value">Verify Identity</h3>
+</div>
+<span class="text-xs text-indigo-400 font-bold px-2 py-1 bg-indigo-500/10 rounded" id="otp-status">Waiting for code...</span>
+</div>
+<div class="grid grid-cols-6 gap-2">
+<input class="w-full aspect-square text-center font-h2-headline bg-surface-container-highest border border-white/10 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none transition-all otp-digit" maxlength="1" inputmode="numeric" type="text"/>
+<input class="w-full aspect-square text-center font-h2-headline bg-surface-container-highest border border-white/10 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none transition-all otp-digit" maxlength="1" inputmode="numeric" type="text"/>
+<input class="w-full aspect-square text-center font-h2-headline bg-surface-container-highest border border-white/10 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none transition-all otp-digit" maxlength="1" inputmode="numeric" type="text"/>
+<input class="w-full aspect-square text-center font-h2-headline bg-surface-container-highest border border-white/10 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none transition-all otp-digit" maxlength="1" inputmode="numeric" type="text"/>
+<input class="w-full aspect-square text-center font-h2-headline bg-surface-container-highest border border-white/10 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none transition-all otp-digit" maxlength="1" inputmode="numeric" type="text"/>
+<input class="w-full aspect-square text-center font-h2-headline bg-surface-container-highest border border-white/10 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none transition-all otp-digit" maxlength="1" inputmode="numeric" type="text"/>
+</div>
+<div class="flex justify-between items-center text-label-caps">
+<button class="text-slate-500 hover:text-on-surface transition-colors" id="resend-otp-button" type="button">Resend Code (45s)</button>
+<button class="text-indigo-400 hover:text-indigo-300 underline underline-offset-4" id="change-email-button" type="button">Change Email</button>
+</div>
+<button class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed" id="verify-otp-button" type="button" disabled>
+  Verify & Continue
+</button>
+</div>
+</div>
+</section>
+<!-- Trust / Footer Links -->
+<footer class="flex justify-center gap-8 py-4">
+<a class="text-label-caps text-slate-500 hover:text-indigo-400 transition-colors" href="#">Terms of Service</a>
+<a class="text-label-caps text-slate-500 hover:text-indigo-400 transition-colors" href="#">Privacy Protocol</a>
+<a class="text-label-caps text-slate-500 hover:text-indigo-400 transition-colors" href="#">Campus Support</a>
+</footer>
+</div>
+</div>
+</main>
+<!-- Navigation Suppressed for Login Page as per Relevance Check rule -->
+<script src="/app.js" defer></script>
+</body></html>

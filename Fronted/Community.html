@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#464554",
+                        "surface-tint": "#c0c1ff",
+                        "surface-bright": "#31394d",
+                        "tertiary-container": "#009eb9",
+                        "inverse-primary": "#494bd6",
+                        "inverse-surface": "#dae2fd",
+                        "on-primary-container": "#0d0096",
+                        "secondary": "#d0bcff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "tertiary": "#4cd7f6",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-container-high": "#222a3d",
+                        "secondary-container": "#571bc1",
+                        "outline": "#908fa0",
+                        "surface-container": "#171f33",
+                        "primary-fixed": "#e1e0ff",
+                        "on-secondary-container": "#c4abff",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "on-secondary-fixed": "#23005c",
+                        "primary-container": "#8083ff",
+                        "error-container": "#93000a",
+                        "on-secondary": "#3c0091",
+                        "on-primary": "#1000a9",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-highest": "#2d3449",
+                        "surface": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "on-tertiary-container": "#002f38",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "on-background": "#dae2fd",
+                        "background": "#0b1326",
+                        "surface-container-low": "#131b2e",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed": "#acedff",
+                        "on-surface-variant": "#c7c4d7",
+                        "primary": "#c0c1ff",
+                        "on-tertiary": "#003640",
+                        "surface-dim": "#0b1326",
+                        "secondary-fixed": "#e9ddff",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "on-primary-fixed-variant": "#2f2ebe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "gutter": "1.5rem",
+                        "lg": "2rem",
+                        "xs": "0.5rem",
+                        "unit": "4px",
+                        "sm": "1rem",
+                        "xl": "3rem",
+                        "margin-page": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2-headline": ["Inter"],
+                        "stat-value": ["Inter"],
+                        "h1-display": ["Inter"],
+                        "h3-title": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2-headline": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "stat-value": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h1-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "h3-title": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top-color: rgba(255, 255, 255, 0.2);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.15);
+        }
+        .glow-indigo {
+            box-shadow: 0 0 20px rgba(73, 75, 214, 0.2);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(192, 193, 255, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#020617] text-on-background font-body-md min-h-screen pb-32" data-page="community">
+<!-- TopAppBar -->
+<header class="bg-slate-950/40 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="text-lg font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 font-inter">LevelUp Campus</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-400 font-inter font-medium hover:bg-white/5 transition-colors px-3 py-1 rounded-lg" href="#">Dashboard</a>
+<a class="text-slate-400 font-inter font-medium hover:bg-white/5 transition-colors px-3 py-1 rounded-lg" href="#">Leaderboard</a>
+<a class="text-indigo-400 font-bold font-inter px-3 py-1 rounded-lg bg-indigo-500/10" href="#">Community</a>
+<a class="text-slate-400 font-inter font-medium hover:bg-white/5 transition-colors px-3 py-1 rounded-lg" href="#">Rewards</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-indigo-500 dark:text-indigo-400 active:scale-95 transition-all duration-200" data-icon="local_fire_department" data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-indigo-500/30 active:scale-95 transition-transform" data-community-profile-trigger type="button" aria-label="Open user details">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="close-up portrait of a young professional man with a friendly smile, clean studio lighting, soft blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl5s5v9n3bxXHzqGBMwx2t6zBpwKXofd0vXBntT3dwMoFKZGVF3c7jVSHisNzIlyDCTKLceJYyvLH7RuC33CUFM0Xb1orOqEb2ite7Wqety9xz9hTHi2khgt9MqzXLE_lsZTOtZWKMcuoGt5um0cB9BGlyAeer5bLI_c_fyjZQ7vDl7K-qUl9-4A2z9WSVQXXABMupjhP3xodjwcfXezgj8WJ2gsh5xnU3vk-yn0QkPiyVIpg1m5pMbcXTjMe7tQE4J0F7jTMaToHx"/>
+</button>
+</div>
+</header>
+<main class="mt-24 px-4 md:px-margin-page max-w-7xl mx-auto">
+<!-- Community Hero / Filter Tabs -->
+<section class="mb-8">
+<h1 class="font-h1-display text-h1-display mb-6">Campus Hub</h1>
+<div class="flex gap-2 p-1 bg-surface-container-lowest rounded-xl w-fit border border-white/5">
+<button class="px-6 py-2 rounded-lg bg-indigo-500 text-on-primary font-body-md font-semibold transition-all" data-room-switch="general" type="button">General Chat</button>
+<button class="px-6 py-2 rounded-lg text-slate-400 font-body-md font-medium hover:bg-white/5 transition-all" data-room-switch="announcements" type="button">Discussion</button>
+<button class="px-6 py-2 rounded-lg text-slate-400 font-body-md font-medium hover:bg-white/5 transition-all" data-room-switch="peer-help" type="button">Peer Help</button>
+</div>
+</section>
+<!-- Main Layout: Sidebar + Feed -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Sidebar: Active Groups & Trending -->
+<aside class="hidden lg:block lg:col-span-3 space-y-gutter">
+<div class="glass-card rounded-2xl p-md">
+<h3 class="font-h3-title text-indigo-400 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+                        Trending Now
+                    </h3>
+<ul class="space-y-4">
+<li class="group cursor-pointer">
+<span class="text-xs font-label-caps text-cyan-400 block mb-1">#EXAMS2024</span>
+<p class="text-body-md text-on-surface group-hover:text-primary transition-colors">Calculus III Study Group</p>
+<span class="text-[12px] text-slate-500">124 members active</span>
+</li>
+<li class="group cursor-pointer">
+<span class="text-xs font-label-caps text-secondary block mb-1">#HACKATHON</span>
+<p class="text-body-md text-on-surface group-hover:text-primary transition-colors">AI Winter Project Team</p>
+<span class="text-[12px] text-slate-500">89 members active</span>
+</li>
+</ul>
+</div>
+<div class="glass-card rounded-2xl p-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 blur-3xl"></div>
+<h3 class="font-h3-title text-indigo-400 mb-4">Peer Experts</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border border-white/10" data-alt="profile photo of a smiling woman with glasses and dark curly hair, professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGuEb9EPN3Gu6wtb_3KuR_JVSD9s90R0RcnpN2qU0S72CdB7VIQXRwSRbG8wxSOKrqYu-OiWN2AhRrwsNCZuInJF2CrvZKSTa4yDpaSeLZ-MDIljxuLmrC0nmxi-1hrR5kgNG8w4-4wcTvD9NIevVzgYnxNSvPfrqhavwONTNvmUJqySG0RH7nGiuPl33eU_RFDvkxFmKxNvtq00tGmRG7o-LgS5oCZ-AjLf_fhzh-cPzUvJZ38YF-Bbmfvw5pm_bIn0qZcAdxWBO4"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Alex Rivers</p>
+<span class="text-[10px] bg-tertiary/10 text-tertiary px-2 py-0.5 rounded-full uppercase font-bold tracking-wider">Top Mentor</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border border-white/10" data-alt="man with beard and short hair looking at camera, neutral studio background, high-end photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7S3Y9T3hpsxLoRvAz5tLu9hxIjpRovRLHGWC_XkkToncihtkiAZ__eyyzvBp7KpJIdR6C-zSmPZMrJrKCSiSts45lsEhVp28evbFOb9U3-Oj3YLla5r2z-Mffi2oa5I6SvA5HOb2re2PBgiZtauFLAsrSnR9Uatv92nfhqJb1T_jWbauA_hGzkgozxPAxtetpGBv10uf9B61OhpK_vUZbWLrEqnaQQ6cTJscaPrlUc_yr4vq5zORmBtSwxaamx-NEm_beD3O9kOEI"/>
+<div>
+<p class="text-sm font-bold text-on-surface">Jordan Chen</p>
+<span class="text-[10px] bg-secondary/10 text-secondary px-2 py-0.5 rounded-full uppercase font-bold tracking-wider">Physics Guru</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Feed Area -->
+<div class="lg:col-span-9 space-y-gutter">
+<!-- Chat Window (Active Tab State) -->
+<div class="glass-card rounded-3xl overflow-hidden flex flex-col h-[600px] shadow-2xl">
+<div class="px-md py-4 border-b border-white/10 flex items-center justify-between bg-white/5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white" data-icon="forum">forum</span>
+</div>
+<div>
+<h2 class="font-h3-title text-on-surface" data-community-room-name>General Chat</h2>
+<p class="text-xs text-cyan-400 flex items-center gap-1" data-community-status>
+<span class="w-2 h-2 rounded-full bg-cyan-400"></span> 428 students online
+                                </p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors" data-icon="search">search</button>
+<button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors" data-icon="more_vert">more_vert</button>
+</div>
+</div>
+<!-- Chat Messages -->
+<div class="flex-1 overflow-y-auto p-md space-y-6" data-community-chat>
+<!-- Message Received -->
+<div class="flex gap-4 max-w-[80%]">
+<img class="w-10 h-10 rounded-full flex-shrink-0" data-alt="close-up of a young man with glasses, smiling softly, vibrant colorful background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo0xlIEl2SYuyFTkq1NbfewTC4UTDsRaYkGZNlwy_XyAWPloLhH60yfmQJBQInilkaufkn8C8vhQzpvVXiHTDExGI4kpQsPluqUj3kFz0Of73BZMGpBDyTMRppDTIMv6J5saFhghhpew99TuF0QcUAesZJj5WuQyH3X13ZMz5nMVeazslzitKyRRSjoAhmn8eExV7vT5JBH5cxKMekpidBy30hsDAOoMmNg6sNOMQalD76QaJfZVybPikXBlnvCDVVDS_vAcegRfA_"/>
+<div class="space-y-1">
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-bold text-indigo-400">Marcus Sterling</span>
+<span class="text-[10px] text-slate-500">10:42 AM</span>
+</div>
+<div class="bg-surface-container-high rounded-2xl rounded-tl-none p-4 text-on-surface border border-white/5">
+                                    Does anyone have the notes for the Data Structures lecture from Tuesday? I had a power outage and missed the last 20 minutes! 😅
+                                </div>
+</div>
+</div>
+<!-- Message Sent -->
+<div class="flex gap-4 max-w-[80%] flex-row-reverse self-end text-right ml-auto">
+<div class="w-10 h-10 rounded-full bg-indigo-500 flex-shrink-0 flex items-center justify-center text-white font-bold">ME</div>
+<div class="space-y-1">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="text-sm font-bold text-cyan-400">You</span>
+<span class="text-[10px] text-slate-500">10:45 AM</span>
+</div>
+<div class="bg-indigo-600 rounded-2xl rounded-tr-none p-4 text-white glow-indigo shadow-lg">
+                                    Yeah, I got you Marcus! Uploading the PDF to the peer-notes channel now.
+                                </div>
+</div>
+</div>
+<!-- Message Received with Reply Context -->
+<div class="flex gap-4 max-w-[80%]">
+<img class="w-10 h-10 rounded-full flex-shrink-0" data-alt="portrait of a young woman with red hair, artistic lighting, soft focused background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1LxwGUL22-7atbQxahhWArQg0ElXdy0SifdqYY1uLdWr7LW7B-BTZWvNJ7oj5GbBfkmjZbXYs9ItBT1lL5YR3fWpM6whsHex4bVyuv5onHkvg8dEfHxywQO-gKYywD9_bIR5H4NvzSGU4BqeaFJAcgrg3_s46VhW9cM-VFaVVp_KphOocIFlIVaJFyCIaOofa-ghAanEJNFI39xZyUgoXsNtgDiUbynHYmW7m24CNpUAJSW8HJA1tZGRpYZLTfgyVYH8UGFnQ7W8W"/>
+<div class="space-y-1">
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-bold text-secondary">Elena Vance</span>
+<span class="text-[10px] text-slate-500">10:48 AM</span>
+</div>
+<div class="bg-surface-container-high rounded-2xl rounded-tl-none border border-white/5 overflow-hidden">
+<div class="bg-white/5 border-l-4 border-indigo-500 p-2 text-xs text-slate-400 italic mx-2 mt-2 rounded">
+                                        "Uploading the PDF to the peer-notes channel now."
+                                    </div>
+<div class="p-4 text-on-surface">
+                                        You're a lifesaver! I was looking for those too. Thanks! 🚀
+                                    </div>
+</div>
+<button class="text-xs text-indigo-400 font-bold hover:underline flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="reply">reply</span> Reply
+                                </button>
+</div>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="p-md bg-slate-900/40 border-t border-white/10">
+<div class="hidden mb-3 rounded-2xl border border-indigo-500/20 bg-indigo-500/10 px-4 py-3 text-sm text-slate-200" data-community-reply-preview>
+<div class="flex items-start justify-between gap-4">
+<div class="space-y-1 min-w-0">
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400">Replying to</p>
+<p class="font-bold text-white" data-community-reply-name>Student</p>
+<p class="text-slate-300 line-clamp-2" data-community-reply-snippet></p>
+</div>
+<button class="text-slate-400 hover:text-white transition-colors" data-community-reply-cancel type="button" aria-label="Cancel reply">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-2 flex items-center gap-3">
+<button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body-md text-on-surface placeholder:text-slate-500" data-community-message-input placeholder="Type your message..." type="text"/>
+<button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined" data-icon="sentiment_satisfied">sentiment_satisfied</span>
+</button>
+<button class="bg-indigo-500 w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform" data-community-send-button type="button">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Discussion Feed Section (Secondary) -->
+<div class="space-y-4 pt-8">
+<div class="flex items-center justify-between">
+<h2 class="font-h2-headline text-h2-headline">Recent Discussions</h2>
+<button class="flex items-center gap-2 text-indigo-400 font-bold hover:gap-3 transition-all">
+                            View All <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-community-posts>
+<!-- Discussion Card 1 -->
+<div class="glass-card p-md rounded-2xl group hover:border-indigo-500/50 transition-all">
+<div class="flex gap-2 mb-3">
+<span class="px-2 py-0.5 bg-cyan-400/10 text-cyan-400 text-[10px] font-bold rounded uppercase">Tech</span>
+<span class="px-2 py-0.5 bg-secondary/10 text-secondary text-[10px] font-bold rounded uppercase">AI</span>
+</div>
+<h4 class="font-h3-title text-on-surface mb-4 group-hover:text-indigo-400 transition-colors">The future of LLMs in Computer Science curriculum?</h4>
+<div class="flex items-center justify-between border-t border-white/5 pt-4">
+<div class="flex items-center -space-x-2">
+<img class="w-6 h-6 rounded-full border border-slate-900" data-alt="avatar 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6aUijHet6tSGXVYVI_L0IG2yPS0XzIVTosbBKjfUH8GMchpv9WkI3eTo4tXkF1V_tgrX32Em8Qkrw2ck1OVq83lKMS-yHU7nI71D9J0tEVo3CVnJgCEWxs4cfub7Ns8rCc0uJ89Vmb7zqiIxMjhgl0kq_6WrDF6ATQPPrY6KmB4vsMvTW1KpiEMzoOP07Yh2S8QsI8PYeGpVJH5n75xOy7usRcTJCn5InYS2Ni_WjLlZ0CIlLhNVXpBsHzXqib5D5mY3O8prJc0qR"/>
+<img class="w-6 h-6 rounded-full border border-slate-900" data-alt="avatar 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiuusUgU6DC3KQ6BouPP-_cuA_qVNUBjkw_pCwUuTWKnRJjU9S89YXb2m-6fXA1z0q0y_zAWKS_fjA-wVr6dtwzR06O5EHTm-E3nIfz2SPgkaQ0ns-oqmHpRc9csU2nKh_XeJKwUVf_yXLlg1HboW8KeikRpif-i8lLB8pvrUX2cxEm8PrCyccBGXfqJWU4dgZYrJnQgmEAxGn3w2Kp7oN3466teJCQGC47lSap0BQU1QD8VwCuh_ugwPSzItCjpOR21Me9dn7ND4q"/>
+<span class="w-6 h-6 rounded-full border border-slate-900 bg-surface-container-high text-[10px] flex items-center justify-center text-slate-400">+14</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="forum">forum</span> 32
+                                    </span>
+<span class="flex items-center gap-1 text-cyan-400 text-xs font-bold">
+<span class="material-symbols-outlined text-[16px]" data-icon="thumb_up">thumb_up</span> 156
+                                    </span>
+</div>
+</div>
+</div>
+<!-- Discussion Card 2 -->
+<div class="glass-card p-md rounded-2xl group hover:border-indigo-500/50 transition-all">
+<div class="flex gap-2 mb-3">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary text-[10px] font-bold rounded uppercase">Productivity</span>
+</div>
+<h4 class="font-h3-title text-on-surface mb-4 group-hover:text-indigo-400 transition-colors">Best Pomodoro techniques for long coding sessions?</h4>
+<div class="flex items-center justify-between border-t border-white/5 pt-4">
+<div class="flex items-center -space-x-2">
+<img class="w-6 h-6 rounded-full border border-slate-900" data-alt="avatar 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzgzvyyQnbQe3aHQjeNACEKaRJJsTxC-ljngOGyPkGCsd6fLw_z3eV51VnObvn5r-bdzkATId2XMzpAT61bXWC95KI7xZaEoW404F_bm1tg6y1ktSw5TNBLZ5amZe4dYfxb3RUrhaS1NKZ8QhMMAo9gsU45wGYy4i1CJkW2aeKZSeMPU6pzJ3lLCOwn0Wczap6QaQboeHyQqLqGQCP9IP48HzEnLolMcblQNzIMsHJBTdAiB7sTg2TVkIe0fy4sfkKcoYEIwplnr0Z"/>
+<span class="w-6 h-6 rounded-full border border-slate-900 bg-surface-container-high text-[10px] flex items-center justify-center text-slate-400">+5</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1 text-slate-400 text-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="forum">forum</span> 18
+                                    </span>
+<span class="flex items-center gap-1 text-cyan-400 text-xs font-bold">
+<span class="material-symbols-outlined text-[16px]" data-icon="thumb_up">thumb_up</span> 84
+                                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- User Details Modal -->
+<div class="fixed inset-0 z-[60] hidden items-center justify-center px-4 py-6" data-community-profile-modal aria-hidden="true">
+<div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" data-community-profile-close></div>
+<section class="relative w-full max-w-2xl glass-card rounded-3xl border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+<div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+<div>
+<p class="text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">Student Details</p>
+<h2 class="text-2xl font-bold text-white" data-community-profile-name>Student</h2>
+</div>
+<button class="w-10 h-10 rounded-xl bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 transition-colors" data-community-profile-close type="button" aria-label="Close user details">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="grid gap-6 md:grid-cols-[180px_1fr] p-6">
+<div class="flex flex-col items-center gap-4">
+<div class="w-32 h-32 rounded-3xl overflow-hidden border border-indigo-400/30 bg-slate-900/60 shadow-lg">
+<img class="w-full h-full object-cover" data-community-profile-avatar alt="User avatar" />
+</div>
+<div class="text-center">
+<p class="text-xs uppercase tracking-[0.2em] text-slate-500">Current Level</p>
+<p class="text-lg font-bold text-white" data-community-profile-level>Level 1</p>
+<p class="text-sm text-slate-400" data-community-profile-title>Freshman</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="rounded-2xl bg-slate-900/50 border border-white/5 p-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email</p>
+<p class="mt-1 text-sm text-white break-all" data-community-profile-email>-</p>
+</div>
+<div class="rounded-2xl bg-slate-900/50 border border-white/5 p-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">XP</p>
+<p class="mt-1 text-sm text-white" data-community-profile-xp>0</p>
+</div>
+<div class="rounded-2xl bg-slate-900/50 border border-white/5 p-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Streak</p>
+<p class="mt-1 text-sm text-white" data-community-profile-streak>0 days</p>
+</div>
+<div class="rounded-2xl bg-slate-900/50 border border-white/5 p-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Rank</p>
+<p class="mt-1 text-sm text-white" data-community-profile-rank>#-</p>
+</div>
+</div>
+<div class="rounded-2xl bg-slate-900/50 border border-white/5 p-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Major</p>
+<p class="mt-1 text-sm text-white" data-community-profile-major>-</p>
+</div>
+<div class="rounded-2xl bg-slate-900/50 border border-white/5 p-4">
+<p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Bio</p>
+<p class="mt-1 text-sm leading-6 text-slate-300" data-community-profile-bio>-</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="rounded-2xl bg-indigo-500/10 border border-indigo-500/20 p-4 text-center">
+<p class="text-[10px] font-bold uppercase tracking-widest text-indigo-300">Posts</p>
+<p class="mt-1 text-xl font-bold text-white" data-community-profile-posts>0</p>
+</div>
+<div class="rounded-2xl bg-indigo-500/10 border border-indigo-500/20 p-4 text-center">
+<p class="text-[10px] font-bold uppercase tracking-widest text-indigo-300">Comments</p>
+<p class="mt-1 text-xl font-bold text-white" data-community-profile-comments>0</p>
+</div>
+<div class="rounded-2xl bg-indigo-500/10 border border-indigo-500/20 p-4 text-center">
+<p class="text-[10px] font-bold uppercase tracking-widest text-indigo-300">Upvotes</p>
+<p class="mt-1 text-xl font-bold text-white" data-community-profile-upvotes>0</p>
+</div>
+</div>
+<div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4">
+<div class="flex items-start justify-between gap-4">
+<div>
+<p class="text-[10px] font-bold uppercase tracking-[0.2em] text-rose-300">Account</p>
+<h3 class="mt-1 text-lg font-bold text-white">Logout</h3>
+<p class="mt-1 text-sm text-slate-300">Sign out of this device and return to the login screen.</p>
+</div>
+<button class="rounded-xl bg-rose-500 px-4 py-2 text-sm font-bold text-white shadow-lg hover:bg-rose-400 active:scale-95 transition-colors" data-community-logout-button type="button">
+Logout
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Create Post FAB -->
+<button class="fixed bottom-32 right-8 w-14 h-14 bg-gradient-to-tr from-cyan-400 to-indigo-600 rounded-2xl shadow-[0_8px_32px_rgba(73,75,214,0.4)] flex items-center justify-center text-white z-40 active:scale-90 transition-transform md:bottom-24">
+<span class="material-symbols-outlined text-[28px]" data-icon="edit">edit</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-950/60 backdrop-blur-2xl border-t border-white/10 shadow-[0_-8px_32px_rgba(0,0,0,0.3)] md:hidden">
+<a class="flex flex-col items-center justify-center text-slate-500 transition-all hover:text-indigo-300 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium font-inter">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 transition-all hover:text-indigo-300 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="text-[10px] font-medium font-inter">Leaderboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-cyan-400 bg-indigo-500/10 rounded-xl px-3 py-1 shadow-[0_0_15px_rgba(34,211,238,0.2)] active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-[10px] font-medium font-inter">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 transition-all hover:text-indigo-300 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="text-[10px] font-medium font-inter">Rewards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 transition-all hover:text-indigo-300 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium font-inter">Profile</span>
+</a>
+</nav>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js" defer></script>
+</body></html>

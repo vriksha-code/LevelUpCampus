@@ -1,0 +1,21 @@
+{
+  "name": "levelupcampus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm --prefix backend/levelup-campus start",
+    "dev": "npm --prefix backend/levelup-campus run dev",
+    "seed": "npm --prefix backend/levelup-campus run seed",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.5.0"
+  }
+}

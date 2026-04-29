@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Leaderboard | LevelUp Campus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#464554",
+                        "surface-tint": "#c0c1ff",
+                        "surface-bright": "#31394d",
+                        "tertiary-container": "#009eb9",
+                        "inverse-primary": "#494bd6",
+                        "inverse-surface": "#dae2fd",
+                        "on-primary-container": "#0d0096",
+                        "secondary": "#d0bcff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "tertiary": "#4cd7f6",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-container-high": "#222a3d",
+                        "secondary-container": "#571bc1",
+                        "outline": "#908fa0",
+                        "surface-container": "#171f33",
+                        "primary-fixed": "#e1e0ff",
+                        "on-secondary-container": "#c4abff",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#060e20",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "on-secondary-fixed": "#23005c",
+                        "primary-container": "#8083ff",
+                        "error-container": "#93000a",
+                        "on-secondary": "#3c0091",
+                        "on-primary": "#1000a9",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-highest": "#2d3449",
+                        "surface": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "on-tertiary-container": "#002f38",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "on-background": "#dae2fd",
+                        "background": "#0b1326",
+                        "surface-container-low": "#131b2e",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed": "#acedff",
+                        "on-surface-variant": "#c7c4d7",
+                        "primary": "#c0c1ff",
+                        "on-tertiary": "#003640",
+                        "surface-dim": "#0b1326",
+                        "secondary-fixed": "#e9ddff",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "on-primary-fixed-variant": "#2f2ebe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "gutter": "1.5rem",
+                        "lg": "2rem",
+                        "xs": "0.5rem",
+                        "unit": "4px",
+                        "sm": "1rem",
+                        "xl": "3rem",
+                        "margin-page": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2-headline": ["Inter"],
+                        "stat-value": ["Inter"],
+                        "h1-display": ["Inter"],
+                        "h3-title": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2-headline": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "stat-value": ["20px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h1-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "h3-title": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020617;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(73, 75, 214, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(34, 211, 238, 0.1) 0px, transparent 50%);
+            min-height: 100vh;
+            color: #dae2fd;
+        }
+        .glass-card {
+            background: rgba(23, 31, 51, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-indigo {
+            box-shadow: 0 0 20px rgba(128, 131, 255, 0.15);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md overflow-x-hidden" data-page="leaderboard">
+<!-- TopAppBar -->
+<header class="bg-slate-950/40 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] flex justify-between items-center px-6 py-4 w-full z-50 fixed top-0 left-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-indigo-500/30">
+<img alt="User Avatar" data-alt="Close up portrait of a young digital artist with neon lighting accents on hair and shoulders, cinematic style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDiosoy3IyGfTb7R6xhB5W3q5kNsxHILy9vHhA8XQa5oXrhb5MXIdAHiWPl7ye8i0YcCVrUNBGAKmJ903k39w7ZOgixQxadhVlRf1yC78UJwQPGUnnHDuacD6YNCa5AFA3U6N7X1aXIKdjE2GSRUjxFvdU_2oPMPOEE1MUX9FkoAfWqutxdYCTAmYhmMfQ0ZYaVuiSTviC6ymxDCLmUpqVvXqgKG3qTZxHxxNCr_sTR5mqI4KO4yfv8VAFqXS88vVtxMNEgVoIcZQq"/>
+</div>
+<span class="text-lg font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 font-inter">LevelUp Campus</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<button class="text-slate-400 hover:bg-white/5 transition-colors px-3 py-1 rounded-lg font-inter text-body-md">Dashboard</button>
+<button class="text-indigo-400 font-bold hover:bg-white/5 transition-colors px-3 py-1 rounded-lg font-inter text-body-md">Leaderboard</button>
+<button class="text-slate-400 hover:bg-white/5 transition-colors px-3 py-1 rounded-lg font-inter text-body-md">Community</button>
+<button class="text-slate-400 hover:bg-white/5 transition-colors px-3 py-1 rounded-lg font-inter text-body-md">Rewards</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-indigo-500 dark:text-indigo-400">
+<span class="material-symbols-outlined" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold font-inter" data-leaderboard-my-rank>12</span>
+</div>
+<span class="material-symbols-outlined text-slate-400" data-icon="notifications">notifications</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-4 md:px-margin-page max-w-7xl mx-auto">
+<!-- Hero Section -->
+<div class="mb-lg">
+<h1 class="font-h1-display text-h1-display text-on-surface mb-2">Campus Elites</h1>
+<p class="text-on-surface-variant font-body-lg">Compete with the top students and climb the ranks to earn exclusive digital status.</p>
+</div>
+<!-- Filters & Tabs Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Sidebar: Filters -->
+<div class="lg:col-span-3 space-y-md">
+<div class="glass-card rounded-2xl p-md">
+<h3 class="font-h3-title text-body-md font-bold mb-sm text-indigo-400">Timeframe</h3>
+<div class="space-y-2">
+<button class="w-full text-left px-4 py-2 rounded-xl bg-indigo-500/10 text-cyan-400 border border-cyan-400/30 transition-all font-medium">This Week</button>
+<button class="w-full text-left px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">This Month</button>
+<button class="w-full text-left px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">All Time</button>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-md">
+<h3 class="font-h3-title text-body-md font-bold mb-sm text-indigo-400">Categories</h3>
+<div class="space-y-2">
+<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl bg-indigo-500/20 text-indigo-100 border border-white/10 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="star">star</span>
+<span>Weekly Top Users</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="speed">speed</span>
+<span>Fastest Progress</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department">local_fire_department</span>
+<span>Streak Holders</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content: Leaderboard -->
+<div class="lg:col-span-9 space-y-gutter">
+<!-- Podium Top 3 -->
+<div class="grid grid-cols-3 gap-4 mb-xl">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center justify-end h-full" data-podium-card="2">
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-1 bg-gradient-to-r from-slate-400 to-slate-200 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+<img alt="Rank 2 Avatar" class="relative w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-slate-300 object-cover" data-podium-avatar data-alt="Portrait of a young man with glasses, soft cinematic studio lighting, deep blue and silver tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjTksmdKnVAK70q6rbyvxJjLsA0H18uMJBWJWqTJh2OCg4hrlT_zBpy2vNMKxc69pJlk0zjlIwRoSFJZMCWb4djiq3UZYSFQihNSA9xvqIIwW9IXzxd8UIXHqJvAQkLYFt2HpwxUhhCD_rNpKBZ14OqI3DX_OGd61H6YnLP3iEQ-LOERHDf8d9WBMuZa4SK3Sm-M18oxx6jekkKZWPdTGfjWrH2dMNPTjSOneB3fM_l6Ol9yapGBn6bP7wVwKatkEFMLdthN36bhW-"/>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-slate-900 font-bold" data-podium-rank>2</div>
+</div>
+<p class="mt-4 font-bold text-center text-on-surface truncate w-full" data-podium-name>Marcus V.</p>
+<p class="text-slate-400 text-sm" data-podium-level>Level 42</p>
+</div>
+<!-- Rank 1 -->
+<div class="flex flex-col items-center justify-end h-full -mt-8" data-podium-card="1">
+<span class="material-symbols-outlined text-yellow-400 text-4xl mb-2 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-2 bg-gradient-to-r from-yellow-500 to-amber-300 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000"></div>
+<img alt="Rank 1 Avatar" class="relative w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-yellow-500 object-cover shadow-2xl" data-podium-avatar data-alt="Vibrant portrait of a female student with short neon hair, glowing background, high-end digital art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEYg00H7BT3DtsIgDVXnDou2Kbhz9nXPCJA_8dZ1-wXx2KtTtMVMj9MKFX2Z5BXbuxGQ4Oeasc_5QJmEL0h55C2xvl0MiFNM4WAjb99foV_NINTjbkYYAPFdoJvaJ97hclLi29bCCoTGuZQvouGGkaOtX6DEy06qZzPnD3yFNN0t50Y0siOT5Xbwi9esMROTttSjNi6ffCFHpcbXvURXxg2ndH1FPqCmWi3st6kEQhwVbYbvPqjPivaC_gnnPs8mAGiEEKbcF700gd"/>
+<div class="absolute -bottom-3 right-0 w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center text-slate-950 font-black text-lg" data-podium-rank>1</div>
+</div>
+<p class="mt-4 font-extrabold text-lg text-center text-white truncate w-full" data-podium-name>Elena Frost</p>
+<p class="text-cyan-400 text-sm font-bold" data-podium-level>Level 58</p>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center justify-end h-full" data-podium-card="3">
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-1 bg-gradient-to-r from-amber-600 to-orange-400 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+<img alt="Rank 3 Avatar" class="relative w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-amber-600 object-cover" data-podium-avatar data-alt="Close-up profile of a male gamer with headphones, vibrant orange backlight, high fidelity render" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmyDjVnQJBdLg2gT2XReqC8LJS-5JxUGpEuonV29gshqy4zqfRvrts0Stiy16eRrC5fUeSTkl9D9QtrEvY1X8u561C7oekEDPep5xfxlPZ8dfssz3nl9fRGLowUfPk33YsU9DRp8oxHnG2tbuEIZDKoiw3WxIx6tYl6XM0x6XWiE_Pmj8sH2AxNwRCjcsbnhsDAsPwJC-Anss-HAD6PS8sgosTXNEAER8YF0rslvp-udO_bszNXNAHoxTfN1FBHdEvSYC4bomU3C1X"/>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center text-white font-bold" data-podium-rank>3</div>
+</div>
+<p class="mt-4 font-bold text-center text-on-surface truncate w-full" data-podium-name>Sam Jenkins</p>
+<p class="text-slate-400 text-sm" data-podium-level>Level 39</p>
+</div>
+</div>
+<!-- Leaderboard List -->
+<div class="glass-card rounded-3xl overflow-hidden shadow-2xl border-white/10">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-white/5 border-b border-white/5">
+<th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest">Rank</th>
+<th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest">Student</th>
+<th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-center">XP</th>
+<th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-center">Streak</th>
+<th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-right">Progress</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5" data-leaderboard-body>
+<!-- User Row (Highlighted) -->
+<tr class="bg-indigo-500/15 border-l-4 border-l-cyan-400">
+<td class="px-6 py-5 font-stat-value text-cyan-400">#12</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full border-2 border-indigo-400 overflow-hidden">
+<img alt="Your Avatar" data-alt="Stylized 3D avatar of a young professional in a futuristic office, soft purple lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6e73oIKEyp0H9Eseq5NVjJr8vkc4g8mDRGHMlPKdhWwgzRP5BUbHHG4nawEanH3hS6ppW3ItIXTeYT5UWHKXnutVmwIB6I2Osr5fUo5ebOkTLNuv9VWsc6E9ZfAIvi3x55a_N9vrSpg36hdGqbsQ6TQU8JEZzADYrMXzHwYac6MZHEDevavtScP-C7INxlz2uhr-ZKTyGvmVUOsYzi48WVgXuhRIbNRCs_9Bb1R83TbShViKwDjPj22Jlt7ukVwJcNBA4sQcTweSh"/>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<p class="font-bold text-white">Alex Rivera</p>
+<span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-[10px] text-indigo-300 font-bold border border-indigo-500/30 uppercase tracking-wider">YOU</span>
+</div>
+<p class="text-xs text-indigo-300/70">Level 24 • Pro Member</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center font-bold text-white">12,450</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-1 text-orange-400">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold">12d</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="inline-flex items-center gap-1 text-green-400 font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>+1.2%</span>
+</div>
+</td>
+</tr>
+<!-- Other Rows -->
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-stat-value text-slate-400">#4</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a creative designer with glasses, dramatic cool lighting, high-end photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbdaReBWNz8aozcBeiCqpQuuyYlc0r9ru-VfqwVLmATYwlmqeDV9G4l-kgQDtncrIj_fpFuufXtZ9AlwbQH_Nq9hmpY0JmDAH-0KiIxSeOewGOUpikLNvpEO_3u3CTzD6qFO_sqiAjrdnQGNWVeF9sDk1zF9RZlScI1Ggg-y_FQADde4eVfvq_m9a78T6Vd74smWe4OC7UHtuEsO-AzqkNJs1xrfKc-Y1z51XfJcwlOiHrgV86N23VYtCrt-4A18yp89KnuVcxaLJD"/>
+<div>
+<p class="font-bold text-white">Sarah Chen</p>
+<p class="text-xs text-slate-500">Level 35 • Elite Alpha</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center font-bold text-slate-300">18,920</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-bold">45d</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right text-green-400 font-bold">+2.4%</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-stat-value text-slate-400">#5</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Hipster student portrait with beanie, warm amber backlighting, urban aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4VUBnPkaCQ6X-9qBIXIiLWrV2YoX_5XOZrReZG9hHVfqWY2qOuxZkWFXoODwbvmHFQvu8HtijndE3IQiijS87OSnCiUkV6dt_CyORO5lRtZYAkUQVVepvCWDJWPFoiK9sSqLwoS6aCFS8QXuF7QUIe534lz5eOMX2QHv-HpJ8L_QeeCoZMFlTR_ZF1KALFdWliN-LzeOdtuITzKOTpUaVc3erQivObf8_gcE_J-vKTUEm38O6hsUdFny1bxe8LDeZbeiiuve69Fta"/>
+<div>
+<p class="font-bold text-white">Jordan Smith</p>
+<p class="text-xs text-slate-500">Level 31 • Beta Tester</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center font-bold text-slate-300">17,400</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-1 text-orange-400">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold">8d</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right text-slate-500 font-bold">-0.5%</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-stat-value text-slate-400">#6</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a young tech enthusiast with colorful background lights, modern aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOHxjPqIPkgf51gbNlyDNa8DZ35nvluFFhVZd44zxbgFhN5tehhm5Y21vP4KcmGdg5VX6b2jgbinY_LslvSXG1qFOEEZwi7vpJOKGV5QDuDCeKJr5RBiC8z19Z8hDhAc3WL7JvdqXqp2TpUsgMutok1u7iOoUjz5qKM4AU0VKHXQFw1Cy023GWCK2YRhxaiDFOHy_gBHyRQT57KdP7r4NSQPfvcwQTNC4KxSUWuth60deLz6klZQKKbKbhTEq9HRVpuZ77vj29aCGQ"/>
+<div>
+<p class="font-bold text-white">Kevin Wu</p>
+<p class="text-xs text-slate-500">Level 28 • Rising Star</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center font-bold text-slate-300">16,150</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-1 text-orange-400">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold">22d</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right text-green-400 font-bold">+5.8%</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-stat-value text-slate-400">#7</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Female student in library with soft natural lighting, peaceful atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDldoTC38FCe0vnlx578-i6y12RoLPD8ImTC4X_PsGHFUK-ohkZwNrFxA_oq4riYMFSgXzm9vc5cSiomQPQBkDwSTWtRAoKMqV9sFmMaJTnVePPD4cYYO_EEk2rSao7lFcGTTH6wpNHcOS62IIR0hIYhp9u3WHNF1eoMcK2IcA0cs0RNJQ-JoZ3oCjlB6hatMYeqi2Nq1M9mbctt2Z4odfgy0-JqwiJQs-BFsxg_t6shi80j8O5kmsyc29IdM3aX9lkfnCHeTt-cPXQ"/>
+<div>
+<p class="font-bold text-white">Maya Patel</p>
+<p class="text-xs text-slate-500">Level 27 • Scholar</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center font-bold text-slate-300">15,800</td>
+<td class="px-6 py-5">
+<div class="flex items-center justify-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-sm" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-bold">3d</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right text-green-400 font-bold">+1.9%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-6 bg-white/5 border-t border-white/5 text-center">
+<button class="text-indigo-400 font-bold hover:text-cyan-400 transition-colors inline-flex items-center gap-2">
+                            Load More
+                            <span class="material-symbols-outlined text-sm" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-950/60 backdrop-blur-2xl rounded-t-2xl border-t border-white/10 shadow-[0_-8px_32px_rgba(0,0,0,0.3)] md:hidden">
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium font-inter">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-cyan-400 bg-indigo-500/10 rounded-xl px-3 py-1 shadow-[0_0_15px_rgba(34,211,238,0.2)] active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="text-[10px] font-medium font-inter">Leaderboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-[10px] font-medium font-inter">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="text-[10px] font-medium font-inter">Rewards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 hover:text-indigo-300 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium font-inter">Profile</span>
+</a>
+</nav>
+<!-- Contextual FAB - Only for specific dashboard views, but added for visual completeness if needed -->
+<button class="fixed right-6 bottom-24 md:bottom-10 w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 shadow-lg shadow-indigo-500/40 flex items-center justify-center text-white z-40 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<script src="/app.js" defer></script>
+</body></html>
