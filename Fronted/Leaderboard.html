@@ -164,23 +164,22 @@
 <div class="glass-card rounded-2xl p-md">
 <h3 class="font-h3-title text-body-md font-bold mb-sm text-indigo-400">Timeframe</h3>
 <div class="space-y-2">
-<button class="w-full text-left px-4 py-2 rounded-xl bg-indigo-500/10 text-cyan-400 border border-cyan-400/30 transition-all font-medium">This Week</button>
-<button class="w-full text-left px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">This Month</button>
-<button class="w-full text-left px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">All Time</button>
+<button class="w-full text-left px-4 py-2 rounded-xl bg-indigo-500/10 text-cyan-400 border border-cyan-400/30 transition-all font-medium" data-leaderboard-period="weekly" type="button">This Week</button>
+<button class="w-full text-left px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all" data-leaderboard-period="all-time" type="button">All Time</button>
 </div>
 </div>
 <div class="glass-card rounded-2xl p-md">
 <h3 class="font-h3-title text-body-md font-bold mb-sm text-indigo-400">Categories</h3>
 <div class="space-y-2">
-<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl bg-indigo-500/20 text-indigo-100 border border-white/10 transition-all">
+<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl bg-indigo-500/20 text-indigo-100 border border-white/10 transition-all" data-leaderboard-type="weekly" type="button">
 <span class="material-symbols-outlined text-sm" data-icon="star">star</span>
 <span>Weekly Top Users</span>
 </button>
-<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">
+<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all" data-leaderboard-type="all-time" type="button">
 <span class="material-symbols-outlined text-sm" data-icon="speed">speed</span>
-<span>Fastest Progress</span>
+<span>All Time Champions</span>
 </button>
-<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all">
+<button class="w-full flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/5 text-slate-400 transition-all" data-leaderboard-type="streak" type="button">
 <span class="material-symbols-outlined text-sm" data-icon="local_fire_department">local_fire_department</span>
 <span>Streak Holders</span>
 </button>
@@ -233,6 +232,7 @@
 <th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest">Student</th>
 <th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-center">XP</th>
 <th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-center">Streak</th>
+<th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-center">Answers</th>
 <th class="px-6 py-4 font-label-caps text-xs text-slate-500 uppercase tracking-widest text-right">Progress</th>
 </tr>
 </thead>

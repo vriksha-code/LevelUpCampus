@@ -14,7 +14,8 @@ connectDB();
 const server = http.createServer(app);
 
 // Initialize Socket.IO
-initSocket(server);
+const io = initSocket(server);
+app.set("io", io);
 
 const startServer = (port, attemptsLeft = MAX_PORT_ATTEMPTS) => {
   server.once("error", (error) => {

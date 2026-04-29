@@ -349,6 +349,8 @@ function renderLeaderboardRow(entry, highlight = false) {
   const avatar = entry.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(entry.name || "Student")}`;
   const levelLabel = entry.levelTitle ? `Level ${entry.currentLevel} • ${entry.levelTitle}` : `Level ${entry.currentLevel || 1}`;
   const streak = entry.dailyStreak ?? 0;
+  const answers = entry.answersCount ?? 0;
+  const score = entry.score != null ? Number(entry.score).toLocaleString() : Number(entry.totalXP || 0).toLocaleString();
 
   return `
     <tr class="${highlight ? "bg-indigo-500/15 border-l-4 border-l-cyan-400" : "hover:bg-white/5 transition-colors"}">
@@ -371,7 +373,8 @@ function renderLeaderboardRow(entry, highlight = false) {
           <span class="font-bold">${streak}d</span>
         </div>
       </td>
-      <td class="px-6 py-5 text-right text-green-400 font-bold">${entry.weeklyXP != null ? `+${entry.weeklyXP}` : ""}</td>
+      <td class="px-6 py-5 text-center text-cyan-300 font-bold">${answers}</td>
+      <td class="px-6 py-5 text-right text-green-400 font-bold">${score}</td>
     </tr>
   `;
 }
@@ -400,23 +403,66 @@ async function initLeaderboardPage() {
   }
 
   try {
-    const response = await apiFetch("/api/leaderboard/weekly?limit=10");
-    const entries = response.data?.leaderboard || [];
-    const body = document.querySelector("[data-leaderboard-body]");
+    const periodButtons = Array.from(document.querySelectorAll("[data-leaderboard-period]"));
+    const tableButtons = Array.from(document.querySelectorAll("[data-leaderboard-type]"));
+    const loadLeaderboard = async (period = "weekly") => {
+      if (period === "streak") {
+        return apiFetch(`/api/leaderboard/streak-holders?limit=10`);
+      }
 
-    updatePodiumSlot(1, entries[0]);
-    updatePodiumSlot(2, entries[1]);
-    updatePodiumSlot(3, entries[2]);
+      return apiFetch(`/api/leaderboard?period=${encodeURIComponent(period)}&limit=10`);
+    };
 
-    if (body) {
-      const myRank = response.data?.myRank;
-      body.innerHTML = entries.map((entry) => renderLeaderboardRow(entry, myRank != null && entry.rank === myRank)).join("");
-    }
+    const renderLeaderboard = async (period = "weekly") => {
+      const response = await loadLeaderboard(period);
+      const entries = response.data?.leaderboard || [];
+      const body = document.querySelector("[data-leaderboard-body]");
 
-    const myRankLabel = document.querySelector("[data-leaderboard-my-rank]");
-    if (myRankLabel && response.data?.myRank != null) {
-      myRankLabel.textContent = `#${response.data.myRank}`;
-    }
+      updatePodiumSlot(1, entries[0]);
+      updatePodiumSlot(2, entries[1]);
+      updatePodiumSlot(3, entries[2]);
+
+      if (body) {
+        const myRank = response.data?.myRank;
+        body.innerHTML = entries.map((entry) => renderLeaderboardRow(entry, myRank != null && entry.rank === myRank)).join("");
+      }
+
+      const myRankLabel = document.querySelector("[data-leaderboard-my-rank]");
+      if (myRankLabel && response.data?.myRank != null) {
+        myRankLabel.textContent = `#${response.data.myRank}`;
+      }
+
+      tableButtons.forEach((button) => {
+        const active = button.dataset.leaderboardType === period;
+        button.classList.toggle("bg-indigo-500/20", active);
+        button.classList.toggle("text-indigo-100", active);
+        button.classList.toggle("text-slate-400", !active);
+      });
+
+      periodButtons.forEach((button) => {
+        const active = button.dataset.leaderboardPeriod === period;
+        button.classList.toggle("bg-indigo-500/10", active);
+        button.classList.toggle("text-cyan-400", active);
+        button.classList.toggle("text-slate-400", !active);
+      });
+    };
+
+    await renderLeaderboard("weekly");
+
+    periodButtons.forEach((button) => {
+      button.addEventListener("click", () => renderLeaderboard(button.dataset.leaderboardPeriod || "weekly"));
+    });
+
+    tableButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const type = button.dataset.leaderboardType || "weekly";
+        if (type === "streak") {
+          renderLeaderboard("streak");
+          return;
+        }
+        renderLeaderboard(type);
+      });
+    });
   } catch (error) {
     const fallbackMessage = document.createElement("p");
     fallbackMessage.className = "mx-auto mt-6 max-w-xl rounded-2xl bg-red-500/20 border border-red-400/30 px-4 py-3 text-sm text-red-100 backdrop-blur-md";
@@ -436,23 +482,30 @@ function renderCommunityMessage(message, currentUserId) {
       </div>
     `
     : "";
-
   const isQuestion = message.messageType === "question";
   const isAnswer = message.messageType === "answer";
   const solved = Boolean(message.isSolved);
+  const accepted = Boolean(message.isAccepted);
   const questionBadge = isQuestion ? `<span class="ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-cyan-400/10 text-cyan-400 rounded font-bold">Question</span>` : "";
+  const answerBadge = isAnswer ? `<span class="ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-green-500/10 text-green-400 rounded font-bold">Answer</span>` : "";
   const solvedBadge = solved ? `<span class="ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-green-500/10 text-green-400 rounded font-bold">Solved</span>` : "";
+  const acceptedBadge = accepted ? `<span class="ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-emerald-500/15 text-emerald-300 rounded font-bold">Accepted</span>` : "";
+  const canAccept = isAnswer && message.questionOwner && currentUserId && String(message.questionOwner) === String(currentUserId);
+
+  const bubbleClass = isAnswer
+    ? `bg-green-700/20 text-white border ${accepted ? "border-emerald-400/70" : "border-green-500/20"} ${accepted ? "shadow-[0_0_0_1px_rgba(52,211,153,0.25)]" : ""}`
+    : (isQuestion ? "bg-surface-container-high border-l-4 border-cyan-400 text-on-surface" : "bg-surface-container-high text-on-surface border border-white/5");
 
   return `
-    <div class="flex gap-4 max-w-[80%]" data-message-id="${message._id || message.id || ""}">
+    <div class="flex gap-4 max-w-[80%]" data-message-id="${message._id || message.id || ""}" data-question-id="${message.questionId || ""}" data-question-owner="${message.questionOwner || ""}">
       <img class="w-10 h-10 rounded-full flex-shrink-0" src="${avatar}" alt="${message.sender?.name || "Student"}" />
       <div class="space-y-1">
         <div class="flex items-baseline gap-2">
           <span class="text-sm font-bold text-indigo-400">${message.sender?.name || "Student"}</span>
-          ${questionBadge}${solvedBadge}
+          ${questionBadge}${answerBadge}${acceptedBadge}${solvedBadge}
           <span class="text-[10px] text-slate-500">${time}</span>
         </div>
-        <div class="bg-surface-container-high rounded-2xl rounded-tl-none p-4 text-on-surface border border-white/5">
+        <div class="${bubbleClass} rounded-2xl rounded-tl-none p-4">
           ${replyMarkup}
           <div>${message.content}</div>
         </div>
@@ -460,6 +513,9 @@ function renderCommunityMessage(message, currentUserId) {
           <button class="text-xs text-indigo-400 font-bold hover:underline flex items-center gap-1" data-community-reply-button type="button" data-reply-id="${message._id || message.id || ""}" data-reply-name="${message.sender?.name || "Student"}" data-reply-content="${String(message.content || "").replace(/"/g, '&quot;')}">
           <span class="material-symbols-outlined text-[14px]">reply</span> Reply
           </button>
+          ${canAccept && !accepted ? `
+            <button class="text-xs text-emerald-300 font-bold hover:underline flex items-center gap-1" data-community-accept-button data-accept-id="${message._id || message.id || ""}" type="button">Mark as Best Answer</button>
+          ` : ""}
           ${isQuestion && !solved ? `
             <button class="text-xs text-green-400 font-bold hover:underline flex items-center gap-1" data-community-solve-button data-solve-id="${message._id || message.id || ""}" type="button">Mark as Solved</button>
           ` : ""}
@@ -533,6 +589,12 @@ async function initCommunityPage() {
     const statusLabel = document.querySelector("[data-community-status]");
     const messageInput = document.querySelector("[data-community-message-input]");
     const sendButton = document.querySelector("[data-community-send-button]");
+    const askButton = document.querySelector("[data-community-ask-button]");
+    const aiButton = document.querySelector("[data-community-ai-button]");
+    const aiPreview = document.querySelector("[data-community-ai-preview]");
+    const aiSnippet = document.querySelector("[data-community-ai-snippet]");
+    const aiDismiss = document.querySelector("[data-community-ai-dismiss]");
+    const answerToggle = document.querySelector("[data-community-answer-toggle]");
     const replyPreview = document.querySelector("[data-community-reply-preview]");
     const replyName = document.querySelector("[data-community-reply-name]");
     const replySnippet = document.querySelector("[data-community-reply-snippet]");
@@ -547,6 +609,64 @@ async function initCommunityPage() {
     const dashboard = dashboardResponse.data || {};
     const room = new URLSearchParams(window.location.search).get("room") || "general";
     let replyTarget = null;
+    let answerMode = false;
+
+    const showTransientBanner = (text, tone = "success") => {
+      const banner = document.createElement("div");
+      const palette = tone === "error"
+        ? "border-red-400/30 bg-red-500/20 text-red-100"
+        : tone === "info"
+          ? "border-cyan-400/30 bg-cyan-500/15 text-cyan-100"
+          : "border-green-400/30 bg-green-500/20 text-green-100";
+      banner.className = `fixed top-24 right-4 z-[80] rounded-2xl border px-4 py-3 shadow-2xl backdrop-blur-md ${palette}`;
+      banner.textContent = text;
+      document.body.appendChild(banner);
+      setTimeout(() => banner.remove(), 2600);
+    };
+
+    const showXpPopup = (amount, message = `🎉 +${amount} XP earned`) => {
+      showTransientBanner(message, "success");
+    };
+
+    const refreshLocalUser = (patch) => {
+      try {
+        const current = JSON.parse(localStorage.getItem(USER_KEY) || "{}");
+        localStorage.setItem(USER_KEY, JSON.stringify({ ...current, ...patch }));
+      } catch {
+        // ignore localStorage parse issues
+      }
+    };
+
+    const markMessageAccepted = (answerId, questionId) => {
+      const answerNode = document.querySelector(`[data-message-id="${answerId}"]`);
+      const questionNode = document.querySelector(`[data-message-id="${questionId}"]`);
+
+      if (answerNode) {
+        answerNode.querySelectorAll(".text-green-400, .text-emerald-300").forEach((el) => el.remove());
+        const header = answerNode.querySelector(".flex.items-baseline");
+        if (header && !header.querySelector(".bg-emerald-500\\/15")) {
+          const badge = document.createElement("span");
+          badge.className = "ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-emerald-500/15 text-emerald-300 rounded font-bold";
+          badge.textContent = "Accepted";
+          header.appendChild(badge);
+        }
+        const bubble = answerNode.querySelector("div[class*='rounded-2xl']");
+        if (bubble) {
+          bubble.classList.remove("border-green-500/20");
+          bubble.classList.add("border-emerald-400/70");
+        }
+      }
+
+      if (questionNode) {
+        const header = questionNode.querySelector(".flex.items-baseline");
+        if (header && !header.querySelector(".bg-emerald-500\\/15")) {
+          const badge = document.createElement("span");
+          badge.className = "ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-emerald-500/15 text-emerald-300 rounded font-bold";
+          badge.textContent = "Answered";
+          header.appendChild(badge);
+        }
+      }
+    };
 
     const appendChatMessage = (message) => {
       if (!chatContainer) {
@@ -611,6 +731,17 @@ async function initCommunityPage() {
       scrollCommunityChatToBottom(chatContainer);
     }
 
+    const askQuestionMode = () => {
+      if (!messageInput) return;
+      messageInput.value = "/q ";
+      messageInput.focus();
+      if (answerMode) {
+        answerMode = false;
+        answerToggle?.classList.remove("bg-green-700");
+        answerToggle?.querySelector("span")?.classList.remove("text-white");
+      }
+    };
+
     chatContainer?.addEventListener("click", (event) => {
       const replyBtn = event.target.closest("[data-community-reply-button]");
       if (replyBtn) {
@@ -627,12 +758,63 @@ async function initCommunityPage() {
         socket.emit("mark_solved", { messageId: id });
         return;
       }
+
+      const acceptBtn = event.target.closest("[data-community-accept-button]");
+      if (acceptBtn) {
+        event.preventDefault();
+        const id = acceptBtn.dataset.acceptId;
+        socket.emit("accept_answer", { messageId: id });
+      }
     });
 
     replyCancel?.addEventListener("click", clearReplyTarget);
 
+    askButton?.addEventListener("click", askQuestionMode);
+
+    aiDismiss?.addEventListener("click", () => {
+      aiPreview?.classList.add("hidden");
+      if (aiSnippet) aiSnippet.textContent = "";
+    });
+
+    aiButton?.addEventListener("click", async () => {
+      const question = (messageInput?.value || "").trim();
+      if (!question) {
+        showTransientBanner("Type a question first to get an AI suggestion.", "error");
+        return;
+      }
+
+      try {
+        aiButton.disabled = true;
+        aiButton.classList.add("opacity-60");
+        const response = await apiFetch("/api/ai/answer", {
+          method: "POST",
+          body: JSON.stringify({ question }),
+        });
+        const suggestion = response.data?.suggestion || "No suggestion available.";
+        if (aiSnippet) aiSnippet.textContent = suggestion;
+        aiPreview?.classList.remove("hidden");
+        showTransientBanner("AI suggestion ready", "info");
+      } catch (error) {
+        showTransientBanner(error.message || "Failed to get AI suggestion", "error");
+      } finally {
+        aiButton.disabled = false;
+        aiButton.classList.remove("opacity-60");
+      }
+    });
+
+    answerToggle?.addEventListener("click", () => {
+      answerMode = !answerMode;
+      answerToggle.classList.toggle("bg-green-700", answerMode);
+      answerToggle.querySelector("span")?.classList.toggle("text-white", answerMode);
+      if (answerMode) {
+        messageInput?.focus();
+        // clear any reply target to avoid accidental reply
+        clearReplyTarget();
+      }
+    });
+
     if (statusLabel) {
-      statusLabel.textContent = `${chatResponse.data?.messages?.length || 0} recent messages`;
+      statusLabel.textContent = `${chatResponse.data?.messages?.length || 0} recent messages • ${dashboard.streak?.current ?? user.dailyStreak ?? 0} day streak`;
     }
 
     if (roomNameLabel) {
@@ -735,14 +917,14 @@ async function initCommunityPage() {
     socket.on("connect", () => {
       socket.emit("join_room", { room });
       if (statusLabel) {
-        statusLabel.textContent = `${chatResponse.data?.messages?.length || 0} recent messages`;
+        statusLabel.textContent = `${chatResponse.data?.messages?.length || 0} recent messages • ${dashboard.streak?.current ?? user.dailyStreak ?? 0} day streak`;
       }
     });
 
     socket.on("online_count", (count) => {
       if (statusLabel) {
         const messageCount = chatResponse.data?.messages?.length || 0;
-        statusLabel.textContent = `${messageCount} recent messages • ${count} online`;
+        statusLabel.textContent = `${messageCount} recent messages • ${dashboard.streak?.current ?? user.dailyStreak ?? 0} day streak • ${count} online`;
       }
     });
 
@@ -765,11 +947,27 @@ async function initCommunityPage() {
       }
     });
 
+    socket.on("answer_accepted", ({ questionId, answerId }) => {
+      markMessageAccepted(answerId, questionId);
+      showTransientBanner("Answer accepted", "success");
+    });
+
+    socket.on("xp_update", (payload) => {
+      if (!payload) return;
+      refreshLocalUser({ totalXP: payload.totalXP, currentLevel: payload.currentLevel, levelTitle: payload.levelTitle });
+      showXpPopup(payload.amount, payload.message || `🎉 +${payload.amount} XP earned`);
+    });
+
+    socket.on("notification", (payload) => {
+      if (!payload) return;
+      showTransientBanner(payload.message || "New notification", payload.type === "accepted_answer" ? "success" : "info");
+    });
+
     socket.on("mark_solved", ({ messageId, solved, solvedBy }) => {
       // Update solved badge in UI
       const el = document.querySelector(`[data-message-id="${messageId}"]`);
       if (!el) return;
-      const badgeExists = el.querySelector(".text-green-400");
+      const badgeExists = el.querySelector(".bg-emerald-500\\/15");
       if (!badgeExists && solved) {
         const header = el.querySelector(".flex.items-baseline") || el.querySelector(".space-y-1 > div:first-child");
         if (header) {
@@ -811,6 +1009,8 @@ async function initCommunityPage() {
         // Send as question (strip prefix)
         const stripped = content.replace(/^\/q(?:uestion)?\s+/i, "");
         socket.emit("send_message", { content: stripped, room, messageType: "question" });
+      } else if (answerMode) {
+        socket.emit("send_message", { content, room, messageType: "answer" });
       } else {
         socket.emit("send_message", { content, room, replyTo: replyContext ? { ...replyContext } : null });
       }

@@ -1,6 +1,7 @@
 const { DiscussionPost, ChatMessage } = require("../models/Community");
 const User = require("../models/User");
 const { awardXP } = require("../services/xp.service");
+const { rewardActivityXP, createCommunityNotification, acceptAnswer } = require("../services/community.service");
 
 /**
  * POST /api/community/posts
@@ -223,6 +224,9 @@ const createQuestion = async (req, res, next) => {
 
     const populated = await message.populate("sender", "name avatar currentLevel levelTitle");
 
+    await rewardActivityXP(req.user._id, "question", "Asked a question");
+    await createCommunityNotification(req.user._id, "Question posted", { messageId: populated._id, room: targetRoom }, "system");
+
     res.status(201).json({ success: true, data: populated, message: "Question posted" });
   } catch (error) {
     next(error);
@@ -251,4 +255,62 @@ const solveQuestion = async (req, res, next) => {
   }
 };
 
-module.exports = { createPost, getPosts, getPost, addComment, upvotePost, getChatHistory, createQuestion, solveQuestion };
+/**
+ * PATCH /api/community/accept/:messageId
+ * Accept an answer for a question.
+ */
+const acceptAnswerByMessage = async (req, res, next) => {
+  try {
+    const answerId = req.params.messageId;
+    const answer = await ChatMessage.findById(answerId);
+
+    if (!answer) {
+      return res.status(404).json({ success: false, message: "Answer not found" });
+    }
+
+    const questionId = answer.questionId;
+    const result = await acceptAnswer({ questionId, answerId, ownerId: req.user._id });
+
+    const answerer = await User.findById(answer.sender);
+    const xpResult = await rewardActivityXP(answer.sender, "accepted_answer", "Accepted answer bonus");
+    await createCommunityNotification(answer.sender, "Your answer was accepted", { answerId, questionId }, "accepted_answer");
+
+    const io = req.app.get("io");
+    if (io) {
+      io.to(result.question.room).emit("answer_accepted", {
+        questionId: result.question._id,
+        answerId: result.answer._id,
+        isAccepted: true,
+        acceptedBy: { id: req.user._id, name: req.user.name },
+        answerer: answerer ? { id: answerer._id, name: answerer.name } : null,
+      });
+      io.to(String(answer.sender)).emit("xp_update", {
+        amount: xpResult.xpAwarded,
+        totalXP: xpResult.totalXP,
+        currentLevel: xpResult.currentLevel,
+        levelTitle: xpResult.levelTitle,
+        message: `🎉 +${xpResult.xpAwarded} XP for accepted answer!`,
+      });
+      io.to(String(answer.sender)).emit("notification", {
+        type: "accepted_answer",
+        message: "Your answer was accepted",
+        data: { answerId, questionId, amount: xpResult.xpAwarded },
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Answer accepted",
+      data: {
+        question: result.question,
+        answer: result.answer,
+        answerer: answerer ? { id: answerer._id, name: answerer.name } : null,
+        xp: xpResult,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createPost, getPosts, getPost, addComment, upvotePost, getChatHistory, createQuestion, solveQuestion, acceptAnswerByMessage };

@@ -2,10 +2,11 @@ const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { ChatMessage } = require("../models/Community");
-const { awardXP } = require("../services/xp.service");
+const { rewardActivityXP, createCommunityNotification, acceptAnswer } = require("../services/community.service");
 
 // Track connected users: userId -> socketId
 const connectedUsers = new Map();
+const getSocketIdForUser = (userId) => connectedUsers.get(String(userId)) || null;
 
 const getJwtSecret = () => {
   if (process.env.JWT_SECRET) {
@@ -52,6 +53,7 @@ const initSocket = (server) => {
   io.on("connection", (socket) => {
     const user = socket.user;
     connectedUsers.set(user._id.toString(), socket.id);
+    socket.join(user._id.toString());
 
     console.log(`🟢 Socket connected: ${user.name} (${socket.id})`);
 
@@ -103,6 +105,7 @@ const initSocket = (server) => {
         if (replyTo) {
           messagePayload.replyTo = {
             messageId: replyTo.messageId || null,
+            senderId: replyTo.senderId || null,
             senderName: replyTo.senderName || "",
             content: replyTo.content || "",
           };
@@ -133,13 +136,39 @@ const initSocket = (server) => {
           replyTo:   populated.replyTo || null,
           messageType: populated.messageType,
           isSolved: populated.isSolved || false,
+          isAccepted: populated.isAccepted || false,
+          questionId: populated.questionId || null,
+          questionOwner: populated.questionOwner || null,
         });
 
-        // Award XP for chat participation (once per 10 messages)
-        const userMsgCount = await ChatMessage.countDocuments({ sender: user._id });
-        if (userMsgCount % 10 === 0) {
-          await awardXP(user._id, 5, "community", "Active chat participant");
-        }
+        const xpResult = await rewardActivityXP(
+          user._id,
+          messagePayload.messageType,
+          messagePayload.messageType === "question"
+            ? "Asked a question"
+            : (messagePayload.messageType === "answer" ? "Shared an answer" : "Sent a message")
+        );
+
+        await createCommunityNotification(
+          user._id,
+          `+${xpResult.xpAwarded} XP earned`,
+          { messageId: populated._id, room: targetRoom, messageType: populated.messageType },
+          "xp"
+        );
+
+        socket.emit("xp_update", {
+          amount: xpResult.xpAwarded,
+          totalXP: xpResult.totalXP,
+          currentLevel: xpResult.currentLevel,
+          levelTitle: xpResult.levelTitle,
+          message: `🎉 +${xpResult.xpAwarded} XP earned`,
+        });
+
+        socket.emit("notification", {
+          type: "xp",
+          message: `You earned +${xpResult.xpAwarded} XP`,
+          data: { amount: xpResult.xpAwarded, totalXP: xpResult.totalXP },
+        });
       } catch (err) {
         console.error("Socket send_message error:", err);
         socket.emit("error", { message: "Failed to send message" });
@@ -155,9 +184,13 @@ const initSocket = (server) => {
         const original = await ChatMessage.findById(originalMessageId).populate("sender", "name");
         const replyToPayload = original ? {
           messageId: original._id,
+          senderId: original.sender?._id || null,
           senderName: original.sender ? original.sender.name : "",
           content: original.content || "",
         } : undefined;
+
+        const questionId = original && original.messageType === "question" ? original._id : (original ? original.questionId : null);
+        const questionOwner = original && original.messageType === "question" ? original.questionOwner : (original ? original.questionOwner : null);
 
         const replyMsg = await ChatMessage.create({
           sender: user._id,
@@ -165,6 +198,8 @@ const initSocket = (server) => {
           content: content.trim(),
           messageType: "answer",
           replyTo: replyToPayload,
+          questionId,
+          questionOwner,
         });
 
         const populatedReply = await replyMsg.populate("sender", "name avatar currentLevel levelTitle");
@@ -176,6 +211,27 @@ const initSocket = (server) => {
           room: targetRoom,
           timestamp: populatedReply.createdAt,
           replyTo: populatedReply.replyTo,
+          messageType: populatedReply.messageType,
+          questionId: populatedReply.questionId,
+          questionOwner: populatedReply.questionOwner,
+          isAccepted: populatedReply.isAccepted,
+        });
+
+        const xpResult = await rewardActivityXP(user._id, "answer", "Shared an answer");
+        await User.findByIdAndUpdate(user._id, { $inc: { answersCount: 1 } });
+
+        socket.emit("xp_update", {
+          amount: xpResult.xpAwarded,
+          totalXP: xpResult.totalXP,
+          currentLevel: xpResult.currentLevel,
+          levelTitle: xpResult.levelTitle,
+          message: `🎉 +${xpResult.xpAwarded} XP for helping!`,
+        });
+
+        socket.emit("notification", {
+          type: "xp",
+          message: `You earned +${xpResult.xpAwarded} XP for answering`,
+          data: { amount: xpResult.xpAwarded, answerId: populatedReply._id },
         });
       } catch (err) {
         console.error("Socket reply_message error:", err);
@@ -198,6 +254,63 @@ const initSocket = (server) => {
       } catch (err) {
         console.error("Socket mark_solved error:", err);
         socket.emit("error", { message: "Failed to mark solved" });
+      }
+    });
+
+    // ─── Accept answer ──────────────────────────────────────────────────────
+    socket.on("accept_answer", async ({ messageId }) => {
+      try {
+        const answer = await ChatMessage.findById(messageId);
+        if (!answer) return socket.emit("error", { message: "Answer not found" });
+
+        const { question, answer: acceptedAnswer } = await acceptAnswer({
+          questionId: answer.questionId,
+          answerId: answer._id,
+          ownerId: user._id,
+        });
+
+        const xpResult = await rewardActivityXP(answer.sender, "accepted_answer", "Accepted answer bonus");
+        await createCommunityNotification(answer.sender, "Your answer was accepted", { questionId: question._id, answerId: acceptedAnswer._id }, "accepted_answer");
+
+        io.to(question.room).emit("answer_accepted", {
+          questionId: question._id,
+          answerId: acceptedAnswer._id,
+          isAccepted: true,
+          acceptedBy: { id: user._id, name: user.name },
+        });
+
+        const answererSocketId = getSocketIdForUser(answer.sender);
+        if (answererSocketId) {
+          io.to(answererSocketId).emit("xp_update", {
+            amount: xpResult.xpAwarded,
+            totalXP: xpResult.totalXP,
+            currentLevel: xpResult.currentLevel,
+            levelTitle: xpResult.levelTitle,
+            message: `🎉 +${xpResult.xpAwarded} XP for accepted answer!`,
+          });
+          io.to(answererSocketId).emit("notification", {
+            type: "accepted_answer",
+            message: `Your answer was accepted`,
+            data: { questionId: question._id, answerId: acceptedAnswer._id, amount: xpResult.xpAwarded },
+          });
+        }
+
+        socket.emit("notification", {
+          type: "accepted_answer",
+          message: `Accepted answer bonus earned`,
+          data: { questionId: question._id, answerId: acceptedAnswer._id, amount: xpResult.xpAwarded },
+        });
+
+        socket.emit("xp_update", {
+          amount: xpResult.xpAwarded,
+          totalXP: xpResult.totalXP,
+          currentLevel: xpResult.currentLevel,
+          levelTitle: xpResult.levelTitle,
+          message: `🎉 +${xpResult.xpAwarded} XP for accepted answer!`,
+        });
+      } catch (err) {
+        console.error("Socket accept_answer error:", err);
+        socket.emit("error", { message: err.message || "Failed to accept answer" });
       }
     });
 

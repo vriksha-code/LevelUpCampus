@@ -36,6 +36,7 @@ app.use("/api/community",   require("./routes/community.routes"));
 app.use("/api/rewards",     require("./routes/rewards.routes"));
 app.use("/api/levels",      require("./routes/levels.routes"));
 app.use("/api/xp",          require("./routes/xp.routes"));
+app.use("/api/ai",          require("./routes/ai.routes"));
 
 app.get("/", (req, res) => {
   res.redirect("/Login.html");

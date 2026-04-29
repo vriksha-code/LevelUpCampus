@@ -222,6 +222,11 @@
 <button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors" data-icon="more_vert">more_vert</button>
 </div>
 </div>
+<!-- Ask Question button -->
+<div class="px-md py-3 border-b border-white/5 flex items-center justify-end bg-white/3">
+    <button class="px-4 py-2 bg-cyan-400 text-on-primary rounded-lg font-semibold shadow-md hover:brightness-95 transition" data-community-ask-button type="button">Ask Question</button>
+</div>
+</div>
 <!-- Chat Messages -->
 <div class="flex-1 overflow-y-auto p-md space-y-6" data-community-chat>
 <!-- Message Received -->
@@ -286,17 +291,34 @@
 </button>
 </div>
 </div>
+<div class="hidden mb-3 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm text-slate-200" data-community-ai-preview>
+    <div class="flex items-start justify-between gap-4">
+        <div class="space-y-1 min-w-0">
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-300">AI Suggestion</p>
+            <p class="text-slate-300 whitespace-pre-wrap" data-community-ai-snippet></p>
+        </div>
+        <button class="text-slate-400 hover:text-white transition-colors" data-community-ai-dismiss type="button" aria-label="Dismiss AI suggestion">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+    </div>
+</div>
 <div class="glass-card rounded-2xl p-2 flex items-center gap-3">
-<button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-white/5 transition-colors">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
+    <button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-white/5 transition-colors" title="Attach">
+    <span class="material-symbols-outlined" data-icon="add">add</span>
+    </button>
 <input class="flex-1 bg-transparent border-none focus:ring-0 text-body-md text-on-surface placeholder:text-slate-500" data-community-message-input placeholder="Type your message..." type="text"/>
 <button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-white/5 transition-colors">
 <span class="material-symbols-outlined" data-icon="sentiment_satisfied">sentiment_satisfied</span>
 </button>
-<button class="bg-indigo-500 w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform" data-community-send-button type="button">
-<span class="material-symbols-outlined" data-icon="send">send</span>
+<button class="bg-cyan-500/15 w-10 h-10 rounded-xl flex items-center justify-center text-cyan-300 shadow-lg active:scale-90 transition-transform" data-community-ai-button type="button" title="Get AI Suggestion">
+    <span class="material-symbols-outlined">smart_toy</span>
 </button>
+                <button class="bg-slate-800 w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform" data-community-answer-toggle type="button" title="Tag next message as Answer">
+                    <span class="material-symbols-outlined text-green-400">check_circle</span>
+                </button>
+                <button class="bg-indigo-500 w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform" data-community-send-button type="button">
+                    <span class="material-symbols-outlined" data-icon="send">send</span>
+                </button>
 </div>
 </div>
 </div>

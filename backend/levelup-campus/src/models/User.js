@@ -109,6 +109,21 @@ const userSchema = new mongoose.Schema(
     postsCount:    { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
     upvotesReceived: { type: Number, default: 0 },
+    answersCount: { type: Number, default: 0 },
+
+    notifications: [
+      {
+        type: {
+          type: String,
+          enum: ["reply", "accepted_answer", "xp", "system"],
+          default: "system",
+        },
+        message: { type: String, required: true },
+        data: { type: mongoose.Schema.Types.Mixed, default: {} },
+        isRead: { type: Boolean, default: false },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
 
     // ─── Auth ─────────────────────────────────────────────────────────────────
     isVerified: { type: Boolean, default: false },

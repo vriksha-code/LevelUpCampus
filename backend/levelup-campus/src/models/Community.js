@@ -21,6 +21,7 @@ const chatMessageSchema = new mongoose.Schema(
     },
     replyTo: {
       messageId: { type: mongoose.Schema.Types.ObjectId, default: null },
+      senderId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
       senderName: { type: String, default: "" },
       content: { type: String, default: "" },
     },
@@ -31,8 +32,12 @@ const chatMessageSchema = new mongoose.Schema(
     },
     // For question messages: who owns the question (can mark solved)
     questionOwner: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+    questionId: { type: mongoose.Schema.Types.ObjectId, ref: "ChatMessage", default: null },
     // Whether a question-type message has been solved
     isSolved: { type: Boolean, default: false },
+    isAccepted: { type: Boolean, default: false },
+    acceptedAt: { type: Date, default: null },
+    acceptedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
   },
   { timestamps: true }
 );
