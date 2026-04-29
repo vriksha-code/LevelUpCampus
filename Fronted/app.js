@@ -251,31 +251,6 @@ function renderRoadmapLevelCard(level, index) {
   `;
 }
 
-function syncDashboardAfterXpAward(payload) {
-  const currentLevel = Number(payload?.data?.currentLevel || 1);
-  const currentTitle = payload?.data?.levelTitle || "";
-  const currentXP = Number(payload?.data?.currentXP || payload?.data?.totalXP || 0);
-  const requiredXP = Number(payload?.data?.requiredXP || 100);
-  const progressPercent = Number(payload?.data?.progressPercent || 0);
-
-  applyBindings({
-    "current-xp": Number(currentXP).toLocaleString(),
-    "required-xp": Number(requiredXP).toLocaleString(),
-    "level-title": `Level ${currentLevel} – ${currentTitle}`,
-    "roadmap-current-level": `Level ${currentLevel}`,
-    "roadmap-current-title": currentTitle,
-  });
-
-  const progressBar = document.querySelector('[data-bind="progress-bar"]');
-  if (progressBar) {
-    progressBar.style.width = `${progressPercent}%`;
-  }
-
-  if (payload?.data?.leveledUp) {
-    window.setTimeout(() => window.location.reload(), 900);
-  }
-}
-
 async function initDashboardPage() {
   if (!getToken()) {
     window.location.href = "/Login.html";
@@ -307,130 +282,6 @@ async function initDashboardPage() {
     if (progressBar) {
       progressBar.style.width = `${data.level.progressPercent}%`;
     }
-
-    // Calendar button navigation
-    document.querySelectorAll('[data-view-calendar]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        window.location.href = '/Calendar.html';
-      });
-    });
-
-    // Award XP buttons on tasks
-    document.querySelectorAll('[data-award-xp]').forEach((btn) => {
-      btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        if (!getToken()) {
-          window.location.href = '/Login.html';
-          return;
-        }
-
-        const amount = Number(btn.dataset.xpAmount || 0);
-        const source = btn.dataset.xpSource || 'task';
-        const sourceCode = btn.dataset.xpSourceCode || 'task';
-        if (!amount || amount <= 0) return;
-
-        try {
-          btn.disabled = true;
-          const payload = await apiFetch('/api/xp/add', {
-            method: 'POST',
-            body: JSON.stringify({ amount, source: sourceCode, description: `Completed: ${source}` }),
-          });
-
-          syncDashboardAfterXpAward(payload);
-
-          // Show quick success
-          const msg = document.createElement('div');
-          msg.className = 'fixed bottom-24 right-6 rounded-lg bg-cyan-700/80 px-4 py-2 text-sm text-white';
-          msg.textContent = `+${amount} XP awarded`;
-          document.body.appendChild(msg);
-          setTimeout(() => msg.remove(), 2200);
-        } catch (err) {
-          const msg = document.createElement('div');
-          msg.className = 'fixed bottom-24 right-6 rounded-lg bg-red-700/80 px-4 py-2 text-sm text-white';
-          msg.textContent = err.message || 'Failed to award XP';
-          document.body.appendChild(msg);
-          setTimeout(() => msg.remove(), 3500);
-        } finally {
-          btn.disabled = false;
-        }
-      });
-    });
-
-    // Quiz modal handlers
-    const quizModal = document.getElementById('quiz-modal');
-    const quizQuestionEl = document.getElementById('quiz-question');
-    const quizInput = document.getElementById('quiz-answer-input');
-    const quizSubmit = document.getElementById('quiz-submit');
-    const quizClose = document.getElementById('quiz-close');
-    const quizCancel = document.getElementById('quiz-cancel');
-    const quizFeedback = document.getElementById('quiz-feedback');
-
-    document.querySelectorAll('[data-open-quiz]').forEach((b) => {
-      b.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (!quizModal) return;
-        const q = b.dataset.quizQuestion || 'Question?';
-        quizQuestionEl.textContent = q;
-        quizInput.value = '';
-        quizFeedback.textContent = '';
-        quizModal.dataset.expected = (b.dataset.quizAnswer || '').trim();
-        quizModal.dataset.xpAmount = b.dataset.xpAmount || '0';
-        quizModal.dataset.xpSource = b.dataset.xpSource || 'quiz';
-        quizModal.classList.remove('hidden');
-        quizInput.focus();
-      });
-    });
-
-    const closeQuiz = () => {
-      if (!quizModal) return;
-      quizModal.classList.add('hidden');
-      delete quizModal.dataset.expected;
-      delete quizModal.dataset.xpAmount;
-      delete quizModal.dataset.xpSource;
-      quizFeedback.textContent = '';
-    };
-
-    quizClose?.addEventListener('click', closeQuiz);
-    quizCancel?.addEventListener('click', closeQuiz);
-
-    quizSubmit?.addEventListener('click', async () => {
-      if (!quizModal) return;
-      const expected = (quizModal.dataset.expected || '').toLowerCase().trim();
-      const entered = (quizInput.value || '').toLowerCase().trim();
-      if (!entered) {
-        quizFeedback.textContent = 'Please enter an answer.';
-        quizFeedback.className = 'text-sm text-yellow-300';
-        return;
-      }
-
-      if (entered !== expected) {
-        quizFeedback.textContent = 'Incorrect — try again.';
-        quizFeedback.className = 'text-sm text-red-300';
-        return;
-      }
-
-      // correct — award XP
-      const amount = Number(quizModal.dataset.xpAmount || 0);
-      const source = quizModal.dataset.xpSource || 'quiz';
-      try {
-        quizSubmit.disabled = true;
-        const payload = await apiFetch('/api/xp/add', {
-          method: 'POST',
-          body: JSON.stringify({ amount, source: 'quiz', description: `Quiz: ${quizQuestionEl.textContent}` }),
-        });
-
-        syncDashboardAfterXpAward(payload);
-
-        quizFeedback.textContent = `Correct! +${amount} XP awarded.`;
-        quizFeedback.className = 'text-sm text-cyan-300';
-        setTimeout(closeQuiz, 1200);
-      } catch (err) {
-        quizFeedback.textContent = err.message || 'Failed to award XP';
-        quizFeedback.className = 'text-sm text-red-300';
-      } finally {
-        quizSubmit.disabled = false;
-      }
-    });
 
     document.querySelectorAll("[data-join-study-session]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -574,56 +425,7 @@ async function initLeaderboardPage() {
   }
 }
 
-async function initCalendarPage() {
-  if (!getToken()) {
-    window.location.href = '/Login.html';
-    return;
-  }
-
-  try {
-    const resp = await apiFetch('/api/xp/history?limit=200');
-    const entries = resp.data?.history || [];
-
-    const datesWithXP = new Set(entries.map((e) => new Date(e.earnedAt).toISOString().slice(0, 10)));
-
-    const root = document.getElementById('calendar-root');
-    if (!root) return;
-
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-
-    const firstDay = new Date(year, month, 1);
-    const startWeekday = firstDay.getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    // Add weekday headers
-    const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    root.innerHTML = weekdays.map(d=>`<div class="text-xs text-slate-400 text-center py-2">${d}</div>`).join('');
-
-    // Empty slots before month start
-    for (let i = 0; i < startWeekday; i++) {
-      const el = document.createElement('div');
-      el.className = 'h-20';
-      root.appendChild(el);
-    }
-
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dateStr = new Date(year, month, d).toISOString().slice(0,10);
-      const hasXP = datesWithXP.has(dateStr);
-
-      const cell = document.createElement('div');
-      cell.className = `h-20 p-2 rounded-lg flex flex-col items-start justify-between ${hasXP ? 'bg-indigo-600/20 border border-indigo-500/30' : 'bg-white/2'} `;
-      cell.innerHTML = `<div class="text-sm text-slate-300">${d}</div><div class="text-xs text-slate-400">${hasXP ? 'XP earned' : ''}</div>`;
-      root.appendChild(cell);
-    }
-  } catch (err) {
-    const root = document.getElementById('calendar-root');
-    if (root) root.innerHTML = `<div class="text-red-400">Failed to load calendar: ${err.message}</div>`;
-  }
-}
-
-function renderCommunityMessage(message) {
+function renderCommunityMessage(message, currentUserId) {
   const avatar = message.sender?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(message.sender?.name || "Student")}`;
   const time = new Date(message.createdAt || Date.now()).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
   const replyMarkup = message.replyTo?.content
@@ -635,21 +437,33 @@ function renderCommunityMessage(message) {
     `
     : "";
 
+  const isQuestion = message.messageType === "question";
+  const isAnswer = message.messageType === "answer";
+  const solved = Boolean(message.isSolved);
+  const questionBadge = isQuestion ? `<span class="ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-cyan-400/10 text-cyan-400 rounded font-bold">Question</span>` : "";
+  const solvedBadge = solved ? `<span class="ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-green-500/10 text-green-400 rounded font-bold">Solved</span>` : "";
+
   return `
     <div class="flex gap-4 max-w-[80%]" data-message-id="${message._id || message.id || ""}">
       <img class="w-10 h-10 rounded-full flex-shrink-0" src="${avatar}" alt="${message.sender?.name || "Student"}" />
       <div class="space-y-1">
         <div class="flex items-baseline gap-2">
           <span class="text-sm font-bold text-indigo-400">${message.sender?.name || "Student"}</span>
+          ${questionBadge}${solvedBadge}
           <span class="text-[10px] text-slate-500">${time}</span>
         </div>
         <div class="bg-surface-container-high rounded-2xl rounded-tl-none p-4 text-on-surface border border-white/5">
           ${replyMarkup}
           <div>${message.content}</div>
         </div>
-        <button class="text-xs text-indigo-400 font-bold hover:underline flex items-center gap-1 mt-1" data-community-reply-button type="button" data-reply-id="${message._id || message.id || ""}" data-reply-name="${message.sender?.name || "Student"}" data-reply-content="${String(message.content || "").replace(/"/g, '&quot;')}">
+        <div class="flex items-center gap-2 mt-1">
+          <button class="text-xs text-indigo-400 font-bold hover:underline flex items-center gap-1" data-community-reply-button type="button" data-reply-id="${message._id || message.id || ""}" data-reply-name="${message.sender?.name || "Student"}" data-reply-content="${String(message.content || "").replace(/"/g, '&quot;')}">
           <span class="material-symbols-outlined text-[14px]">reply</span> Reply
-        </button>
+          </button>
+          ${isQuestion && !solved ? `
+            <button class="text-xs text-green-400 font-bold hover:underline flex items-center gap-1" data-community-solve-button data-solve-id="${message._id || message.id || ""}" type="button">Mark as Solved</button>
+          ` : ""}
+        </div>
       </div>
     </div>
   `;
@@ -739,7 +553,7 @@ async function initCommunityPage() {
         return;
       }
 
-      chatContainer.insertAdjacentHTML("beforeend", renderCommunityMessage(message));
+      chatContainer.insertAdjacentHTML("beforeend", renderCommunityMessage(message, user._id));
       scrollCommunityChatToBottom(chatContainer);
     };
 
@@ -793,18 +607,26 @@ async function initCommunityPage() {
     }
 
     if (chatContainer) {
-      chatContainer.innerHTML = (chatResponse.data?.messages || []).map(renderCommunityMessage).join("");
+      chatContainer.innerHTML = (chatResponse.data?.messages || []).map((m) => renderCommunityMessage(m, user._id)).join("");
       scrollCommunityChatToBottom(chatContainer);
     }
 
     chatContainer?.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-community-reply-button]");
-      if (!button) {
+      const replyBtn = event.target.closest("[data-community-reply-button]");
+      if (replyBtn) {
+        event.preventDefault();
+        setReplyTarget(replyBtn.dataset.replyId, replyBtn.dataset.replyName, replyBtn.dataset.replyContent);
         return;
       }
 
-      event.preventDefault();
-      setReplyTarget(button.dataset.replyId, button.dataset.replyName, button.dataset.replyContent);
+      const solveBtn = event.target.closest("[data-community-solve-button]");
+      if (solveBtn) {
+        event.preventDefault();
+        const id = solveBtn.dataset.solveId;
+        // Emit mark_solved through socket
+        socket.emit("mark_solved", { messageId: id });
+        return;
+      }
     });
 
     replyCancel?.addEventListener("click", clearReplyTarget);
@@ -926,7 +748,7 @@ async function initCommunityPage() {
 
     socket.on("chat_history", ({ room: joinedRoom, messages }) => {
       if (joinedRoom === room && chatContainer) {
-        chatContainer.innerHTML = (messages || []).map(renderCommunityMessage).join("");
+        chatContainer.innerHTML = (messages || []).map((m) => renderCommunityMessage(m, user._id)).join("");
         scrollCommunityChatToBottom(chatContainer);
       }
     });
@@ -934,6 +756,28 @@ async function initCommunityPage() {
     socket.on("new_message", (message) => {
       if (message.room === room) {
         appendChatMessage(message);
+      }
+    });
+
+    socket.on("reply_message", (message) => {
+      if (message.room === room) {
+        appendChatMessage(message);
+      }
+    });
+
+    socket.on("mark_solved", ({ messageId, solved, solvedBy }) => {
+      // Update solved badge in UI
+      const el = document.querySelector(`[data-message-id="${messageId}"]`);
+      if (!el) return;
+      const badgeExists = el.querySelector(".text-green-400");
+      if (!badgeExists && solved) {
+        const header = el.querySelector(".flex.items-baseline") || el.querySelector(".space-y-1 > div:first-child");
+        if (header) {
+          const badge = document.createElement("span");
+          badge.className = "ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 bg-green-500/10 text-green-400 rounded font-bold";
+          badge.textContent = "Solved";
+          header.insertBefore(badge, header.querySelector("span.text-[10px]") || null);
+        }
       }
     });
 
@@ -946,7 +790,8 @@ async function initCommunityPage() {
     });
 
     const sendMessage = () => {
-      const content = messageInput?.value.trim();
+      let content = messageInput?.value || "";
+      content = content.trim();
       if (!content) {
         return;
       }
@@ -959,7 +804,17 @@ async function initCommunityPage() {
           }
         : replyTarget;
 
-      socket.emit("send_message", { content, room, replyTo: replyContext ? { ...replyContext } : null });
+      // If replying, send via reply_message to mark as answer
+      if (replyContext && replyContext.messageId) {
+        socket.emit("reply_message", { content, room, originalMessageId: replyContext.messageId });
+      } else if (content.startsWith("/q ") || content.startsWith("/question ")) {
+        // Send as question (strip prefix)
+        const stripped = content.replace(/^\/q(?:uestion)?\s+/i, "");
+        socket.emit("send_message", { content: stripped, room, messageType: "question" });
+      } else {
+        socket.emit("send_message", { content, room, replyTo: replyContext ? { ...replyContext } : null });
+      }
+
       if (messageInput) {
         messageInput.value = "";
         messageInput.focus();
@@ -1015,25 +870,6 @@ function renderRewardBadge(badge) {
   `;
 }
 
-function renderRecentRewardBadge(entry) {
-  const badge = entry.badge || entry;
-  const icon = badge.icon || "military_tech";
-  const when = entry.earnedAt ? new Date(entry.earnedAt).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "Recently";
-
-  return `
-    <div class="glass-card rounded-2xl p-md flex items-center gap-md">
-      <div class="w-14 h-14 rounded-full bg-indigo-500/15 flex items-center justify-center shrink-0 border border-indigo-500/30">
-        <span class="material-symbols-outlined text-indigo-400 text-3xl">${icon}</span>
-      </div>
-      <div class="min-w-0">
-        <p class="text-white font-bold truncate">${badge.name || "Badge"}</p>
-        <p class="text-slate-400 text-sm line-clamp-2">${badge.description || "Unlocked badge"}</p>
-        <p class="text-[10px] uppercase tracking-widest text-indigo-400 mt-1">Unlocked ${when}</p>
-      </div>
-    </div>
-  `;
-}
-
 function renderRewardTimelineItem(entry) {
   const source = entry.achievement || entry.badge || entry;
   const title = source?.name || "Achievement unlocked";
@@ -1054,24 +890,6 @@ function renderRewardTimelineItem(entry) {
   `;
 }
 
-function renderLevelHistoryEntry(entry, isCurrent = false) {
-  const when = entry.date ? new Date(entry.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "Recently";
-  return `
-    <div class="flex items-center gap-4 rounded-2xl border ${isCurrent ? "border-cyan-400/30 bg-cyan-500/10" : "border-white/10 bg-white/5"} p-md">
-      <div class="w-12 h-12 rounded-full flex items-center justify-center ${isCurrent ? "bg-cyan-400/20 text-cyan-300" : "bg-indigo-500/15 text-indigo-300"}">
-        <span class="material-symbols-outlined">military_tech</span>
-      </div>
-      <div class="min-w-0 flex-1">
-        <div class="flex items-center justify-between gap-2">
-          <h4 class="text-white font-bold">Level ${entry.level}${isCurrent ? " (Current)" : ""}</h4>
-          <span class="text-[10px] uppercase tracking-widest ${isCurrent ? "text-cyan-300" : "text-slate-400"}">${when}</span>
-        </div>
-        <p class="text-slate-400 text-sm">${entry.title || `Level ${entry.level}`}</p>
-      </div>
-    </div>
-  `;
-}
-
 async function initRewardsPage() {
   if (!getToken()) {
     window.location.href = "/Login.html";
@@ -1079,26 +897,24 @@ async function initRewardsPage() {
   }
 
   try {
-    const [summaryResponse, badgesResponse, achievementsResponse, levelsResponse] = await Promise.all([
+    const [summaryResponse, badgesResponse, achievementsResponse] = await Promise.all([
       apiFetch("/api/rewards"),
       apiFetch("/api/rewards/badges"),
       apiFetch("/api/rewards/achievements"),
-      apiFetch("/api/levels"),
     ]);
 
     const summary = summaryResponse.data || {};
     const badgesContainer = document.querySelector("[data-rewards-badges]");
-    const recentBadgesContainer = document.querySelector("[data-rewards-recent-badges]");
     const timelineContainer = document.querySelector("[data-rewards-timeline]");
-    const levelHistoryContainer = document.querySelector("[data-level-history]");
 
     const bindings = {
-      "rewards-earned-badges": summary.earned?.badges ?? 0,
-      "rewards-earned-achievements": summary.earned?.achievements ?? 0,
-      "rewards-total-badges": summary.total?.badges ?? 0,
-      "rewards-total-achievements": summary.total?.achievements ?? 0,
-      "rewards-completion": `${summary.completionPercent ?? 0}%`,
-    };
+  "rewards-earned-badges": summary.earned?.badges ?? 0,
+  "rewards-earned-achievements": summary.earned?.achievements ?? 0,
+  "rewards-total-badges": summary.total?.badges ?? 0,
+  "rewards-total-achievements": summary.total?.achievements ?? 0,
+  "rewards-completion": `${summary.completionPercent ?? 0}%`,
+  "rewards-total-xp": Number(summary.totalXP ?? 0).toLocaleString(),
+};
 
     Object.entries(bindings).forEach(([key, value]) => {
       document.querySelectorAll(`[data-bind="${key}"]`).forEach((element) => {
@@ -1108,27 +924,6 @@ async function initRewardsPage() {
 
     if (badgesContainer) {
       badgesContainer.innerHTML = (badgesResponse.data?.badges || []).map(renderRewardBadge).join("");
-    }
-
-    if (recentBadgesContainer) {
-      const recentBadges = summary.recentBadges || [];
-      recentBadgesContainer.innerHTML = recentBadges.length
-        ? recentBadges.map(renderRecentRewardBadge).join("")
-        : `<div class="rounded-2xl border border-white/10 bg-white/5 p-md text-slate-400 text-sm">No badges unlocked yet.</div>`;
-    }
-
-    if (levelHistoryContainer) {
-      const history = levelsResponse.data?.levelHistory || [];
-      const current = levelsResponse.data?.current;
-      const currentMarkup = current ? renderLevelHistoryEntry({ level: current.level, title: current.title, date: current.date }, true) : "";
-      const previousMarkup = history
-        .filter((entry) => Number(entry.level) < Number(current?.level || 1))
-        .slice()
-        .reverse()
-        .map((entry) => renderLevelHistoryEntry(entry, false))
-        .join("");
-
-      levelHistoryContainer.innerHTML = `${currentMarkup}${previousMarkup || `<div class="rounded-2xl border border-white/10 bg-white/5 p-md text-slate-400 text-sm">No previous levels yet.</div>`}`;
     }
 
     if (timelineContainer) {
@@ -1414,8 +1209,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (document.body.dataset.page === "profile") {
     initProfilePage();
-  }
-  if (document.body.dataset.page === "calendar") {
-    initCalendarPage();
   }
 });

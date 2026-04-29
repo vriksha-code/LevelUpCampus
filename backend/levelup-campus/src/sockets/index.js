@@ -82,7 +82,8 @@ const initSocket = (server) => {
     });
 
     // ─── Send message ────────────────────────────────────────────────────────
-    socket.on("send_message", async ({ content, room, replyTo }) => {
+    // payload: { content, room, replyTo, messageType }
+    socket.on("send_message", async ({ content, room, replyTo, messageType = "normal" }) => {
       try {
         if (!content || content.trim().length === 0) return;
         if (content.length > 1000) {
@@ -92,16 +93,27 @@ const initSocket = (server) => {
         const validRooms = ["general", "peer-help", "announcements", "random"];
         const targetRoom = validRooms.includes(room) ? room : (socket.currentRoom || "general");
 
-        const message = await ChatMessage.create({
+        const messagePayload = {
           sender:  user._id,
           room:    targetRoom,
           content: content.trim(),
-          replyTo: replyTo ? {
+          messageType: messageType === "question" ? "question" : (messageType === "answer" ? "answer" : "normal"),
+        };
+
+        if (replyTo) {
+          messagePayload.replyTo = {
             messageId: replyTo.messageId || null,
             senderName: replyTo.senderName || "",
             content: replyTo.content || "",
-          } : undefined,
-        });
+          };
+        }
+
+        // If posting a question, set questionOwner
+        if (messagePayload.messageType === "question") {
+          messagePayload.questionOwner = user._id;
+        }
+
+        const message = await ChatMessage.create(messagePayload);
 
         const populated = await message.populate("sender", "name avatar currentLevel levelTitle");
 
@@ -119,6 +131,8 @@ const initSocket = (server) => {
           room:      targetRoom,
           timestamp: populated.createdAt,
           replyTo:   populated.replyTo || null,
+          messageType: populated.messageType,
+          isSolved: populated.isSolved || false,
         });
 
         // Award XP for chat participation (once per 10 messages)
@@ -129,6 +143,61 @@ const initSocket = (server) => {
       } catch (err) {
         console.error("Socket send_message error:", err);
         socket.emit("error", { message: "Failed to send message" });
+      }
+    });
+
+    // ─── Reply to a message (answer) ─────────────────────────────────────────
+    socket.on("reply_message", async ({ content, room, originalMessageId }) => {
+      try {
+        if (!content || !content.trim()) return;
+        const targetRoom = room || socket.currentRoom || "general";
+
+        const original = await ChatMessage.findById(originalMessageId).populate("sender", "name");
+        const replyToPayload = original ? {
+          messageId: original._id,
+          senderName: original.sender ? original.sender.name : "",
+          content: original.content || "",
+        } : undefined;
+
+        const replyMsg = await ChatMessage.create({
+          sender: user._id,
+          room: targetRoom,
+          content: content.trim(),
+          messageType: "answer",
+          replyTo: replyToPayload,
+        });
+
+        const populatedReply = await replyMsg.populate("sender", "name avatar currentLevel levelTitle");
+
+        io.to(targetRoom).emit("reply_message", {
+          id: populatedReply._id,
+          sender: { id: user._id, name: user.name, avatar: user.avatar },
+          content: populatedReply.content,
+          room: targetRoom,
+          timestamp: populatedReply.createdAt,
+          replyTo: populatedReply.replyTo,
+        });
+      } catch (err) {
+        console.error("Socket reply_message error:", err);
+        socket.emit("error", { message: "Failed to send reply" });
+      }
+    });
+
+    // ─── Mark question as solved ─────────────────────────────────────────────
+    socket.on("mark_solved", async ({ messageId }) => {
+      try {
+        const msg = await ChatMessage.findById(messageId);
+        if (!msg) return socket.emit("error", { message: "Message not found" });
+        if (String(msg.questionOwner) !== String(user._id)) {
+          return socket.emit("error", { message: "Only the question owner can mark solved" });
+        }
+        msg.isSolved = true;
+        await msg.save();
+
+        io.to(msg.room).emit("mark_solved", { messageId: msg._id, solved: true, solvedBy: { id: user._id, name: user.name } });
+      } catch (err) {
+        console.error("Socket mark_solved error:", err);
+        socket.emit("error", { message: "Failed to mark solved" });
       }
     });
 

@@ -181,12 +181,16 @@
 <span class="text-h3-title font-h3-title text-white" data-bind="rewards-earned-badges">14</span>
 <span class="text-label-caps text-slate-400 uppercase">Badges</span>
 </div>
+
 <div class="glass-card rounded-2xl p-md flex flex-col items-center justify-center text-center">
-<div class="w-12 h-12 rounded-xl bg-tertiary/20 flex items-center justify-center mb-sm">
-<span class="material-symbols-outlined text-tertiary" data-icon="star">star</span>
-</div>
-<span class="text-h3-title font-h3-title text-white">2,840</span>
-<span class="text-label-caps text-slate-400 uppercase">Total XP</span>
+  <div class="w-12 h-12 rounded-xl bg-tertiary/20 flex items-center justify-center mb-sm">
+    <span class="material-symbols-outlined text-tertiary" data-icon="star">star</span>
+  </div>
+
+  <!-- ✅ FIXED HERE -->
+  <span class="text-h3-title font-h3-title text-white" data-bind="rewards-total-xp">0</span>
+
+  <span class="text-label-caps text-slate-400 uppercase">Total XP</span>
 </div>
 <div class="glass-card rounded-2xl p-md col-span-2 flex items-center gap-md">
 <div class="w-14 h-14 rounded-full bg-surface-container-highest flex items-center justify-center border border-white/10 shrink-0">

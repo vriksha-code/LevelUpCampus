@@ -200,4 +200,55 @@ const getChatHistory = async (req, res, next) => {
   }
 };
 
-module.exports = { createPost, getPosts, getPost, addComment, upvotePost, getChatHistory };
+/**
+ * POST /api/community/question
+ * Create a chat question message
+ */
+const createQuestion = async (req, res, next) => {
+  try {
+    const { content, room } = req.body;
+    if (!content || !content.trim()) {
+      return res.status(400).json({ success: false, message: "Question content is required" });
+    }
+
+    const targetRoom = room || "general";
+
+    const message = await ChatMessage.create({
+      sender: req.user._id,
+      room: targetRoom,
+      content: content.trim(),
+      messageType: "question",
+      questionOwner: req.user._id,
+    });
+
+    const populated = await message.populate("sender", "name avatar currentLevel levelTitle");
+
+    res.status(201).json({ success: true, data: populated, message: "Question posted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * PATCH /api/community/question/:id/solve
+ * Mark a question message as solved (only owner can mark)
+ */
+const solveQuestion = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const msg = await ChatMessage.findById(id);
+    if (!msg) return res.status(404).json({ success: false, message: "Message not found" });
+    if (String(msg.questionOwner) !== String(req.user._id)) {
+      return res.status(403).json({ success: false, message: "Only question owner can mark as solved" });
+    }
+
+    msg.isSolved = true;
+    await msg.save();
+
+    res.json({ success: true, message: "Question marked as solved", data: msg });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createPost, getPosts, getPost, addComment, upvotePost, getChatHistory, createQuestion, solveQuestion };

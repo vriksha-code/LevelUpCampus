@@ -13,5 +13,7 @@ router.get("/posts/:id",              protect, getPost);
 router.post("/posts/:id/comment",     protect, validateComment, addComment);
 router.post("/posts/:id/upvote",      protect, upvotePost);
 router.get("/chat/history",           protect, getChatHistory);
+router.post("/question",              protect, createQuestion);
+router.patch("/question/:id/solve",   protect, solveQuestion);
 
 module.exports = router;

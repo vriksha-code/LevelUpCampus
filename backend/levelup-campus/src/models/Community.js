@@ -24,11 +24,15 @@ const chatMessageSchema = new mongoose.Schema(
       senderName: { type: String, default: "" },
       content: { type: String, default: "" },
     },
-    type: {
+    messageType: {
       type: String,
-      enum: ["text", "system"],
-      default: "text",
+      enum: ["normal", "question", "answer", "system"],
+      default: "normal",
     },
+    // For question messages: who owns the question (can mark solved)
+    questionOwner: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+    // Whether a question-type message has been solved
+    isSolved: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
